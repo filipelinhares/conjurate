@@ -1,0 +1,21 @@
+{
+  "name": "generator",
+  "version": "0.1.0",
+  "description": "Simple file generator",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/filipelinhares/generator.git"
+  },
+  "author": "Filipe Linhares",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/filipelinhares/generator/issues"
+  },
+  "homepage": "https://github.com/filipelinhares/generator#readme"
+}
