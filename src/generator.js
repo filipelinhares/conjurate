@@ -1,40 +1,46 @@
-const fs = require('fs-extra');
-const path = require('path');
+const fs = require("fs-extra");
+const path = require("path");
+const walkSync = require("walk-sync");
+const ARGS = process.argv;
 
-const folder = process.argv[2];
-const param = process.argv[3];
+if (ARGS.length < 4) {
+  console.log("faz direito po");
+  process.exit(1);
+}
 
-const templatesFolder = path.resolve(__dirname, `../generator`);
+const folder = ARGS[2];
+const param = ARGS[3];
+const dest = ARGS[4];
+
+const templatesFolder = path.resolve(__dirname, `../generator`, folder);
 const tmpFolder = path.resolve(__dirname, `../.tmp-generator`, folder);
 
-const findAll = (search) => new RegExp(search, 'g');
+const findAll = search => new RegExp(search, "g");
 
-if (fs.pathExistsSync('./.tmp-generator')) {
-  fs.removeSync('./.tmp-generator');
+if (fs.pathExistsSync("./.tmp-generator")) {
+  fs.removeSync("./.tmp-generator");
 }
 
-fs.mkdirSync('./.tmp-generator');
+fs.mkdirSync("./.tmp-generator");
 
-fs.copySync(path.join(templatesFolder, folder), path.join(tmpFolder));
+fs.copySync(templatesFolder, tmpFolder);
 
+const paths = walkSync(tmpFolder);
 
-const readAndUpdateDir = (files) => {
-  files.forEach((file, index) => {
-    const fileLocation = path.join(tmpFolder, file)
-    const fileStats = fs.statSync(fileLocation);
+paths.forEach(file => {
+  const fileLocation = path.join(tmpFolder, file);
+  const fileStat = fs.statSync(fileLocation);
 
-    if (fileStats.isFile()) {
-      const x = fs.readFileSync(fileLocation, 'utf8');
-      const l = x.replace(findAll('%%%'), param)
-      
-      const newFileName = file.replace(findAll('%%%'), param)
-      fs.renameSync(fileLocation, path.join(tmpFolder, newFileName));
-      fs.writeFileSync(path.join(tmpFolder, newFileName), l);
-    }
-  });
-}
+  if (fileStat.isFile()) {
+    const x = fs.readFileSync(fileLocation, "utf8");
+    const l = x.replace(findAll("%%%"), param);
 
-const lol = fs.readdirSync(path.join(tmpFolder));
-readAndUpdateDir(lol)
+    const newFileName = fileLocation.replace(findAll("%%%"), param);
+    fs.renameSync(fileLocation, newFileName);
+    console.log(newFileName);
+    fs.writeFileSync(newFileName, l);
+  }
+});
 
-// fs.remove('./.tmp-generator')
+fs.copySync(path.join(tmpFolder), dest);
+fs.remove("./.tmp-generator");
