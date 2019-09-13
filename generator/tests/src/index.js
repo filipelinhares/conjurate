@@ -1,1 +1,1 @@
-const %%% = require('%%%');
+const %camel% = require('%camel%');

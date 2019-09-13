@@ -1,1 +1,1 @@
-import lorem from 'lorem.js';
+import %%% from '%%%.js';

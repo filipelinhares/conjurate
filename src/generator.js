@@ -7,6 +7,8 @@ const package = require('../package.json');
 
 const { findAll } = require('./util.js');
 
+console.log(package['generator'])
+
 const ARGS = process.argv;
 
 if (ARGS.length < 4) {

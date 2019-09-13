@@ -1,1 +1,1 @@
-const lorem = require('lorem');
+const 6 = require('25');
