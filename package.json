@@ -4,7 +4,10 @@
   "description": "Simple file generator",
   "main": "index.js",
   "dependencies": {
+    "chalk": "^2.4.2",
+    "change-case": "^3.1.0",
     "fs-extra": "^8.1.0",
+    "meow": "^5.0.0",
     "walk-sync": "^2.0.2"
   },
   "devDependencies": {},
@@ -20,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/filipelinhares/generator/issues"
   },
-  "homepage": "https://github.com/filipelinhares/generator#readme"
+  "homepage": "https://github.com/filipelinhares/generator#readme",
+  "generator": {
+    ""
+  }
 }
