@@ -1,18 +1,16 @@
 {
-  "name": "generator",
+  "name": "conjurer",
   "version": "0.1.0",
   "description": "Simple file generator",
-  "main": "index.js",
-  "dependencies": {
-    "chalk": "^2.4.2",
-    "change-case": "^3.1.0",
-    "fs-extra": "^8.1.0",
-    "meow": "^5.0.0",
-    "walk-sync": "^2.0.2"
+  "main": "cli.js",
+  "bin": {
+    "conjure": "./cli.js"
   },
-  "devDependencies": {},
   "scripts": {
-    "test": "test"
+    "test": "xo && jest",
+    "test:lint": "xo",
+    "test:unit": "jest",
+    "fake": "node ./src/generator.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +22,42 @@
     "url": "https://github.com/filipelinhares/generator/issues"
   },
   "homepage": "https://github.com/filipelinhares/generator#readme",
-  "generator": {
-    ""
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "change-case": "^3.1.0",
+    "fs-extra": "^8.1.0",
+    "meow": "^5.0.0",
+    "mri": "^1.1.4",
+    "prompts": "^2.2.1",
+    "read-pkg-up": "^6.0.0",
+    "signale": "^1.4.0",
+    "tempy": "^0.3.0",
+    "walk-sync": "^2.0.2",
+    "write-pkg": "^4.0.0"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "file-test": "^1.0.0",
+    "jest": "^24.9.0",
+    "prettier": "^1.18.2",
+    "xo": "^0.24.0"
+  },
+  "xo": {
+    "env": {
+      "node": true,
+      "jest": true
+    },
+    "space": true,
+    "ignore": [
+      "./generator",
+      "./components"
+    ],
+    "extends": [
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ]
   }
 }

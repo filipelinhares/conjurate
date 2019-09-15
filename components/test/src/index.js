@@ -1,1 +1,0 @@
-const lorem = require('lorem');

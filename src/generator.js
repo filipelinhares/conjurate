@@ -1,61 +1,51 @@
-const fs = require("fs-extra");
-const path = require("path");
-const walkSync = require("walk-sync");
-const caase = require('change-case');
-const chalk = require('chalk');
-const package = require('../package.json');
+const path = require('path');
+const fs = require('fs-extra');
+const walkSync = require('walk-sync');
+const tempy = require('tempy');
+const { Signale } = require('signale');
 
-const { findAll } = require('./util.js');
+const interactive = new Signale({ interactive: true });
 
-console.log(package['generator'])
+const { findAll, caseFn } = require('./util.js');
 
-const ARGS = process.argv;
+const REGEX_CASES = /%camel%|%constant%|%lower%|%lcFirst%|%no%|%kebab%|%pascal%|%path%|%sentence%|%snake%|%swap%|%title%|%upper%|%ucFirst%/g;
 
-if (ARGS.length < 4) {
-  console.log(chalk.red("Wrong number of arguments"))
-  process.exit(1);
-}
+module.exports = async (cli, { cwd, commands, templates }) => {
+  interactive.await('oiii');
+  const ARGS = cli._;
+  const folder = ARGS[0];
+  const param = ARGS[1];
+  const dest = cli.out ? path.resolve(cwd, cli.out, param) : path.resolve(cwd, commands[folder], param);
 
-const folder = ARGS[2];
-const param = ARGS[3];
-const dest = ARGS[4];
+  const tmpFolder = path.resolve(tempy.directory(), folder);
+  const templatesFolder = path.resolve(cwd, templates, folder);
 
-const REGEX_CASES = /%camel%|%constant%|%lower%|%lcFirst%|%no%|%kebab%|%pascal%|%path%|%sentence%|%snake%|%swap%|%title%|%upper%|%ucFirst%/g
+  await fs.copy(templatesFolder, tmpFolder);
+  const paths = walkSync(tmpFolder);
 
-const templatesFolder = path.resolve(__dirname, `../generator`, folder);
-const tmpFolder = path.resolve(__dirname, `../.tmp-generator`, folder);
+  const promises = paths.map(async file => {
+    const fileLocation = path.join(tmpFolder, file);
+    const fileStat = await fs.stat(fileLocation);
 
-if (fs.pathExistsSync("./.tmp-generator")) {
-  fs.removeSync("./.tmp-generator");
-}
+    if (fileStat.isFile()) {
+      const x = await fs.readFile(fileLocation, 'utf8');
+      const l = x.replace(findAll(REGEX_CASES), match => {
+        return caseFn(match)(param);
+      });
 
-fs.mkdirSync("./.tmp-generator");
+      const newFileName = fileLocation.replace(findAll(REGEX_CASES), match => {
+        return caseFn(match)(param);
+      });
 
-fs.copySync(templatesFolder, tmpFolder);
+      await fs.rename(fileLocation, newFileName);
+      await fs.writeFile(newFileName, l);
+    }
+  });
 
-const paths = walkSync(tmpFolder);
+  await Promise.all(promises);
 
-console.log(walkSync(tmpFolder, {ignore: ['files']}))
+  await fs.copy(tmpFolder, dest);
+  interactive.success(`created ${param}`);
 
-paths.forEach(file => {
-  const fileLocation = path.join(tmpFolder, file);
-  const fileStat = fs.statSync(fileLocation);
-
-  if (fileStat.isFile()) {
-    const x = fs.readFileSync(fileLocation, "utf8");
-    const l = x.replace(findAll(REGEX_CASES), (match, param) => {
-      return caase[match.replace(/%/g, '')](param);
-    });
-
-    const newFileName = fileLocation.replace(findAll(REGEX_CASES), (match, param) => {
-      return caase[match.replace(/%/g, '')](param);
-    });
-
-    fs.renameSync(fileLocation, newFileName);
-    fs.writeFileSync(newFileName, l);
-  }
-});
-
-fs.copySync(tmpFolder, dest);
-
-fs.remove("./.tmp-generator");
+  await fs.remove(tmpFolder);
+};

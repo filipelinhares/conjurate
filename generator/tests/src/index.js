@@ -1,1 +1,0 @@
-const %camel% = require('%camel%');
