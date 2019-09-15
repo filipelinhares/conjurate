@@ -4,15 +4,15 @@ const HELP = `
 
 `;
 
-const CONJURER_CONFIG_JSON = `
+const CONJURATE_CONFIG_JSON = `
 {
-  "templates": "./conjurer",
+  "templates": "./conjurate",
   "commandsPath": {
     "command": "./defaultDestFolder"
   }
 }
 `
 module.exports = {
-  CONJURER_CONFIG_JSON,
+  CONJURATE_CONFIG_JSON,
   HELP
 }

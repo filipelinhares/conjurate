@@ -10,18 +10,24 @@ const { findAll, caseFn } = require('./util.js');
 
 const REGEX_CASES = /%camel%|%constant%|%lower%|%lcFirst%|%no%|%kebab%|%pascal%|%path%|%sentence%|%snake%|%swap%|%title%|%upper%|%ucFirst%/g;
 
-module.exports = async (cli, { cwd, commands, templates }) => {
-  interactive.await('oiii');
-  const ARGS = cli._;
-  const folder = ARGS[0];
-  const param = ARGS[1];
-  const dest = cli.out ? path.resolve(cwd, cli.out, param) : path.resolve(cwd, commands[folder], param);
-
+module.exports = async (cli, { commands, cwd, templates, folder, param }) => {
   const tmpFolder = path.resolve(tempy.directory(), folder);
   const templatesFolder = path.resolve(cwd, templates, folder);
 
+  const follow = await fs.exists(templatesFolder);
+
+  if (!follow) {
+    interactive.error(
+`${param} template does not exist
+
+
+`);
+    process.exit();
+  }
+
   await fs.copy(templatesFolder, tmpFolder);
   const paths = walkSync(tmpFolder);
+
 
   const promises = paths.map(async file => {
     const fileLocation = path.join(tmpFolder, file);

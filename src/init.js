@@ -2,22 +2,22 @@ const path = require('path');
 const fs = require('fs-extra');
 const prompts = require('prompts');
 const writePkg = require('write-pkg');
-const { CONJURER_CONFIG_JSON } = require('./help');
+const { CONJURATE_CONFIG_JSON } = require('./help');
 
 const QUESTIONS = [
   {
     type: 'select',
     name: 'place',
-    message: 'Where do you want to keep conjurer config?',
+    message: 'Where do you want to keep conjurate config?',
     choices: [
       { title: 'package.json', value: 'package.json' },
-      { title: '.conjurer.json', value: '.conjurer.json' },
+      { title: '.conjurate.json', value: '.conjurate.json' },
     ],
   },
   {
     type: 'text',
     name: 'templates',
-    initial: './conjurer',
+    initial: './conjurate',
     message: `A folder to keep your templates files`,
   },
   {
@@ -29,18 +29,21 @@ const QUESTIONS = [
 ];
 
 const mergeWithPackageConfig = ({ pkg, cwd }) => {
-  pkg.conjurer = JSON.parse(CONJURER_CONFIG_JSON);
-  const { conjurer } = pkg;
+  pkg.conjurate = JSON.parse(CONJURATE_CONFIG_JSON);
+  const { conjurate } = pkg;
 
-  writePkg.sync(cwd, { ...pkg, conjurer });
+  writePkg.sync(cwd, {
+    ...pkg,
+    conjurate
+  });
 };
 
 const setup = async ({ pkg, cwd }) => {
   const response = await prompts(QUESTIONS);
   if (response.confirm && response.place !== 'package.json') {
     await fs.writeFile(
-      path.resolve(cwd, '.conjurer.json'),
-      CONJURER_CONFIG_JSON,
+      path.resolve(cwd, '.conjurate.json'),
+      CONJURATE_CONFIG_JSON,
     );
   }
 

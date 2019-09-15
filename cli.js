@@ -1,10 +1,13 @@
 #!/usr/bin/env node
+const path = require('path');
 const mri = require('mri');
 const readPkgUp = require('read-pkg-up');
 const play = require('./src/generator');
 const { HELP } = require('./src/help.js');
 const setup = require('./src/init.js');
 const { readConfigFile } = require('./src/util.js');
+const userDir = process.cwd();
+const signale = require('signale');
 
 const {package: packageJSON} = readPkgUp.sync({
   cwd: __dirname,
@@ -18,6 +21,11 @@ const ret = readPkgUp.sync({
 
 const { package: pkg } = ret || { pkg: {} };
 
+const { commandsPath: commands, templates = './conjurate' } = readConfigFile({
+  pkg,
+  userDir,
+});
+
 const argv = process.argv.slice(2);
 const CLI = mri(argv, {
   alias: {
@@ -26,7 +34,17 @@ const CLI = mri(argv, {
     i: 'init'
   }
 });
-const userDir = process.cwd();
+
+const ARGS = CLI._;
+const folder = ARGS[0];
+const param = ARGS[1];
+  
+if (!Object.keys(commands).includes(folder) && !CLI.init) {
+  signale.error('bleh')
+  process.exit();
+}
+
+const dest = CLI.out ? path.resolve(userDir, CLI.out, param) : path.resolve(userDir, commands[folder], param);
 
 if (CLI.init) {
   setup({ pkg, cwd: userDir })
@@ -43,12 +61,7 @@ if (CLI.version) {
 }
 
 if (CLI._.length >= 2) {
-  const { commandsPath: commands, templates = './conjurer' } = readConfigFile({
-    pkg,
-    userDir,
-  });
-
-  play(CLI, { pkg, cwd: userDir, templates, commands })
+  play(CLI, { pkg, cwd: userDir, templates, commands, folder, param, dest })
     .then(() => {})
     .catch(error => {
       console.log({ error });

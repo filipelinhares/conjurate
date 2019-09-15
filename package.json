@@ -1,10 +1,10 @@
 {
-  "name": "conjurer",
+  "name": "conjurate",
   "version": "0.1.0",
   "description": "Simple file generator",
   "main": "cli.js",
   "bin": {
-    "conjure": "./cli.js"
+    "conjurate": "./cli.js"
   },
   "scripts": {
     "test": "xo && jest",
