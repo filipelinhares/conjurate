@@ -10,7 +10,7 @@ const { findAll, caseFn } = require('./util.js');
 
 const REGEX_CASES = /%camel%|%constant%|%lower%|%lcFirst%|%no%|%kebab%|%pascal%|%path%|%sentence%|%snake%|%swap%|%title%|%upper%|%ucFirst%/g;
 
-module.exports = async (cli, { commands, cwd, templates, folder, param }) => {
+module.exports = async (cli, { dest, cwd, templates, folder, param }) => {
   const tmpFolder = path.resolve(tempy.directory(), folder);
   const templatesFolder = path.resolve(cwd, templates, folder);
 
