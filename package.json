@@ -1,6 +1,6 @@
 {
   "name": "conjurate",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple file generator",
   "main": "cli.js",
   "bin": {
