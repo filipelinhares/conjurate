@@ -1,6 +1,18 @@
-# WIP Conjurate
+
+<a href="https://github.com/filipelinhares/conjurate"><img
+  src="https://i.imgur.com/2amDxYd.png" alt="Conjurate Logo"
+  width="115" align="right"></a>
+
+# Conjurate
+
+> Easy way to generate your files
+
+
+[![npm][npm-image]][npm-url] [![license][license-image]][license-url]
+[![changelog][changelog-image]][changelog-url]
 
 ## Instalation
+
 
 **Globally**
 
@@ -131,3 +143,10 @@ npm test
 
 ## License
 [MIT](LICENSE.md) © Filipe Linhares
+
+[changelog-image]: https://img.shields.io/badge/changelog-md-blue.svg?style=flat
+[changelog-url]: CHANGELOG.md
+[license-image]: https://img.shields.io/npm/l/conjurate.svg?style=flat
+[license-url]: LICENSE.md
+[npm-image]: https://img.shields.io/npm/v/conjurate.svg?style=flat
+[npm-url]: https://www.npmjs.com/package/conjurate
