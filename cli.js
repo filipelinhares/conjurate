@@ -2,24 +2,15 @@
 const path = require('path');
 const mri = require('mri');
 const signale = require('signale');
-const readPkgUp = require('read-pkg-up');
 const generator = require('./src/generator');
 const { HELP } = require('./src/content.js');
 const setup = require('./src/init.js');
-const { readConfigFile } = require('./src/util.js');
+const { readConfigFile, readPackagesFile } = require('./src/util.js');
 
 const userDir = process.cwd();
 const argv = process.argv.slice(2);
 
-const { package: packageJSON } = readPkgUp.sync({
-  cwd: __dirname,
-  normalize: false,
-});
-
-const { package: userPkg } = readPkgUp.sync({
-  cwd: process.cwd(),
-  normalize: false,
-});
+const { userPkg, conjuratePkg } = readPackagesFile({ cwd: userDir });
 
 const CLI = mri(argv, {
   alias: {
@@ -36,7 +27,7 @@ if (CLI.init) {
 }
 
 if (CLI.version) {
-  signale.log(packageJSON.version);
+  signale.log(conjuratePkg.version);
   process.exit();
 }
 
