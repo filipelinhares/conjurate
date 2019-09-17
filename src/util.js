@@ -7,20 +7,26 @@ const findAll = search => new RegExp(search, 'g');
 const isEmpty = obj => !obj || (obj && Object.keys(obj).length === 0);
 
 const readConfigFile = ({ pkg, cwd }) => {
-  const config = pkg.conjurate;
+  let config = pkg.conjurate;
+
   if (isEmpty(config)) {
-    try {
-      const configPath = path.resolve(cwd, './.conjurate.json');
-      const file = fs.readFileSync(configPath);
-      return JSON.parse(file);
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        return { error: true };
-      }
+    const configPath = path.resolve(cwd, './.conjurate.json');
+    const exists = fs.existsSync(configPath);
+
+    if (!exists) {
+      return { error: true };
     }
+
+    const configJSON = fs.readFileSync(configPath);
+    config = JSON.parse(configJSON);
   }
 
-  return config;
+  let { templatesRoot } = config;
+  if (templatesRoot.startsWith('~')) {
+    templatesRoot = resolvePkg(templatesRoot.substring(1));
+  }
+
+  return { ...config, templatesRoot};
 };
 
 const readPackagesFile = ({ cwd }) => {

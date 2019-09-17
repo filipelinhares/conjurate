@@ -33,7 +33,7 @@ npm install --save-dev conjurate
 
 ## 2.0 Getting start
 
-##### 2.1 Create the files of your template using the [5.0 template's](50-templates) placeholder
+##### 2.1 Create the files of your template using the [5.0 template's](#50-templates) placeholder
 
 The name "`component`" must be the same used in the config file in [2.3](#23-change-templates-name-and-default-destination-folder)
 
@@ -160,8 +160,7 @@ This is the folder where you keep your templates.
 ├── src
 └── package.json
 ```
-
-
+  **4.1.1 Using npm packages**
 
 **4.2 templates**
 
@@ -230,11 +229,6 @@ If you want to use space in the placeholder name use string.
 npm install
 npm test
 ```
-
-## Roadmap
-
-- [ ] Cli to templates management
-- [ ] Templates of conjurate templates
 
 ## License
 

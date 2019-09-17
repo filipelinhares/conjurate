@@ -11,7 +11,6 @@ module.exports = async (
   cli,
   { dest, cwd, templatesRoot, templates, folder, param },
 ) => {
-  signale.success('start generating...');
   const tmpFolder = path.resolve(tempy.directory(), folder);
   const templatesFolder = path.resolve(cwd, templatesRoot, folder);
 
@@ -21,6 +20,7 @@ module.exports = async (
     throw new Error(`${templatesRoot}/${folder} template does not exist`);
   }
 
+  signale.success('start generating...');
   await fs.copy(templatesFolder, tmpFolder);
   const paths = walkSync(tmpFolder);
 
