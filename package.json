@@ -44,14 +44,9 @@
     "xo": "^0.24.0"
   },
   "xo": {
-    "env": {
-      "node": true,
-      "jest": true
-    },
     "space": true,
-    "ignore": [
-      "./generator",
-      "./components"
+    "envs": [
+      "jest"
     ],
     "extends": [
       "prettier"

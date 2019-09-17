@@ -7,7 +7,7 @@
 > Easy way to generate your files
 
 [![npm][npm-image]][npm-url] [![license][license-image]][license-url]
-[![changelog][changelog-image]][changelog-url]
+[![changelog][changelog-image]][changelog-url] [![travis][travis-img]][travis-url]
 
 ## 1.0 Instalation
 
@@ -211,6 +211,8 @@ npm test
 
 [MIT](LICENSE.md) © Filipe Linhares
 
+[travis-img]: https://travis-ci.org/filipelinhares/conjurate.svg?branch=master
+[travis-url]: https://travis-ci.org/filipelinhares/conjurate
 [changelog-image]: https://img.shields.io/badge/changelog-md-blue.svg?style=flat
 [changelog-url]: CHANGELOG.md
 [license-image]: https://img.shields.io/npm/l/conjurate.svg?style=flat

@@ -1,7 +1,6 @@
 const path = require('path');
 const fs = require('fs-extra');
 const changeCase = require('change-case');
-const signale = require('signale');
 
 const findAll = search => new RegExp(search, 'g');
 
