@@ -1,4 +1,3 @@
-
 <a href="https://github.com/filipelinhares/conjurate"><img
   src="https://i.imgur.com/2amDxYd.png" alt="Conjurate Logo"
   width="115" align="right"></a>
@@ -7,20 +6,18 @@
 
 > Easy way to generate your files
 
-
 [![npm][npm-image]][npm-url] [![license][license-image]][license-url]
 [![changelog][changelog-image]][changelog-url]
 
-## Instalation
+## 1.0 Instalation
 
-
-**Globally**
+**1.1 Globally**
 
 ```bash
 npm install -g conjurate
 ```
 
-**Locally**
+**1.2 Locally**
 
 ```bash
 npm install --save-dev conjurate
@@ -34,13 +31,116 @@ npm install --save-dev conjurate
 }
 ```
 
-## Set up
+## 2.0 Getting start
 
+##### 2.1 Create the files of your template using the [5.0 tempate's]() placeholder.
+
+The name "`component`" must be the same used in the config file in [2.3](#23-change-templates-name-and-default-destination-folder)
+
+```diff
+├── conjurate
+│   └── component
+│       ├── %kebab%.js
+│       └── %kebab%.css
+├── components
+├── package-lock.json
+└── package.json
 ```
+
+```javascript
+./conjurate/component/%kebab%.js
+
+import React from 'react';
+import %camel%Style from './%kebab%.css' 
+```
+
+##### 2.2 Run conjurate initial command to genrate a config file or add the config to package.json.
+
+```bash
 conjurate --init
 ```
 
-## Config
+```diff
+├── conjurate
+│   └── component
+│       ├── %kebab%.js
+│       └── %kebab%.css
+├── components
+├── package-lock.json
++├── .conjurate.json
+└── package.json
+```
+
+`.conjurate.json`
+
+```json
+{
+  "templatesRoot": "./conjurate",
+  "templates": {
+    "<template-name>": "./<default-destination-dir>",
+    "<example-component>": "<example-./src/components>"
+  }
+}
+```
+
+##### 2.3 Change templates name and default destination folder.
+
+```diff
+{
+  "templatesRoot": "./conjurate",
+  "templates": {
+-    "template-name": "./template-destination-dir"
+-    "<example-component>": "<example-./src/components>"
++    "component": "./components"
+  }
+}
+```
+
+##### 2.4 Run conjurate passing the `template-name` and the placeholder name.
+
+```bash
+conjurate component paper-input
+
+✔  success   created ./components/paper-input
+```
+
+```diff
+├── conjurate
+│   └── components
+│       ├── %kebab%.js
+│       └── %kebab%.css
+├── components
+│   └── input
++│       ├── paper-input.scss
++│       └── paper-input.js
+├── package-lock.json
+└── package.json
+```
+
+```diff
++./conjurate/input/index.js
++
++import React from 'react';
++import paperInputStyle from './paper-input.css' 
+```
+
+## 3.0 Usage
+
+```bash
+conjurate <template-name> <placeholder-name> [--out ./output]
+```
+
+**3.1 <template-name>**
+
+The template name configured in [2.3](#23-change-templates-name-and-default-destination-folder).
+
+**3.2 <placeholder-name>** 
+
+It will be the generated folder name inside destination folder configured in [2.3](#23-change-templates-name-and-default-destination-folder).
+
+**3.3 --out**` overwrite conjurate config file.
+
+## 4.0 Config
 
 ```json
 {
@@ -50,84 +150,50 @@ conjurate --init
   }
 }
 ```
-***templatesFolder***
 
-**commands**
+***4.1 templatesRoot***
 
-#### Example
+**4.2 templates**
 
-```json
-{
-  "templatesRoot": "./conjurate",
-  "templates": {
-    "component": "./src/components"
-  }
-}
-```
+## 5.0 Tempates
 
+You can use a placeholder when developing your templates to help with customization. It will be replaced by the <placeholder-name> and can be used in files names and in file content. (directory name will be allowed in next versions). _In our example it was `paper-input`._
 
+In the example we used `%camel%` and `%kebab%` but you have more options. They are inherited from [change-chase]() package, eg:
 
 ```bash
-# Globally
-conjurate component input
-
-✔  success   created ./src/components/input
+conjurate component "test string"
 ```
 
+If you want to use space in the placeholder name use string.
 
+`%camel%`:  => `testString`
 
-## Tempates
+`%constant%` => `TEST_STRING`
 
-TODO
+`%lower%` => `test_string`
 
+`%lcFirst%` => `tEST`
 
+`%no% `do nothing
 
-#### Example
+`%kebab%` => `test-case`
 
-```reStructuredText
-├── conjurate
-│   └── components
-│       ├── %kebab%.js
-│       └── %kebab%.css
-├── components
-├── package-lock.json
-└── package.json
-```
+`%pascal%` => `TestString`
 
+`%path%` => `test/string`
 
+`%sentence%` => `Test string`
 
-```javascript
-./conjurate/input/index.js
+`%snake%` => `test_string`
 
-import React from 'react';
-import %camel%Style from './%kebab%.css' 
-```
+`%swap%`=> `TEST STRING`
 
-##### Result
+`%title%` => `Test String`
 
-```
-├── conjurate
-│   └── components
-│       ├── %kebab%.js
-│       └── %kebab%.css
-├── components
-│   └── input
-│       ├── paper-input.scss
-│       └── paper-input.js
-├── package-lock.json
-└── package.json
-```
+`%upper%`=> `TEST STRING`
 
-```javascript
-./conjurate/input/index.js
-
-import React from 'react';
-import paperInputStyle from './paper-input.css' 
-```
-
-## Usage
-
-TODO
+`%ucFirst` => `Test string`
 
 ## Development
 
@@ -142,6 +208,7 @@ npm test
 - [ ] Templates of conjurate templates
 
 ## License
+
 [MIT](LICENSE.md) © Filipe Linhares
 
 [changelog-image]: https://img.shields.io/badge/changelog-md-blue.svg?style=flat
