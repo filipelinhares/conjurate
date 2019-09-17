@@ -3,13 +3,23 @@ const path = require('path');
 const mri = require('mri');
 const signale = require('signale');
 const readPkgUp = require('read-pkg-up');
-const play = require('./src/generator');
-const { HELP } = require('./src/help.js');
+const generator = require('./src/generator');
+const { HELP } = require('./src/content.js');
 const setup = require('./src/init.js');
 const { readConfigFile } = require('./src/util.js');
 
 const userDir = process.cwd();
 const argv = process.argv.slice(2);
+
+const { package: packageJSON } = readPkgUp.sync({
+  cwd: __dirname,
+  normalize: false,
+});
+
+const { package: userPkg } = readPkgUp.sync({
+  cwd: process.cwd(),
+  normalize: false,
+});
 
 const CLI = mri(argv, {
   alias: {
@@ -19,54 +29,55 @@ const CLI = mri(argv, {
   },
 });
 
-const ARGS = CLI._;
-const folder = ARGS[0];
-const param = ARGS[1];
-
-const { package: packageJSON } = readPkgUp.sync({
-  cwd: __dirname,
-  normalize: false,
-});
-
-const ret = readPkgUp.sync({
-  cwd: process.cwd(),
-  normalize: false,
-});
-
-const { package: pkg } = ret || { pkg: {} };
-
-const { commandsPath: commands, templates = './conjurate' } = readConfigFile({
-  pkg,
-  userDir,
-});
-
-if (!Object.keys(commands).includes(folder) && !CLI.init) {
-  signale.error(`Command not found, try one of: ${Object.keys(commands)}`);
-  process.exit();
-}
-
-const dest = CLI.out
-  ? path.resolve(userDir, CLI.out, param)
-  : path.resolve(userDir, commands[folder], param);
-
 if (CLI.init) {
-  setup({ pkg, cwd: userDir })
-    .then({})
+  setup({ pkg: userPkg, cwd: userDir })
+    .then(() => process.exit())
     .catch(() => process.exit());
 }
 
-if (CLI.help) {
-  console.log(HELP);
-}
-
 if (CLI.version) {
-  console.log(packageJSON.version);
+  signale.log(packageJSON.version);
+  process.exit();
 }
 
-if (CLI._.length >= 2) {
-  play(CLI, { pkg, cwd: userDir, templates, commands, folder, param, dest })
-    .then(() => {})
-    .catch(error => {
-      console.log({ error });
-    });
+if (CLI.help) {
+  signale.log(HELP);
+  process.exit();
+}
+
+if (!CLI.init) {
+  const ARGS = CLI._;
+  const folder = ARGS[0];
+  const param = ARGS[1];
+
+  const { error: configFileError, templates, templatesRoot = './conjurate' } = readConfigFile({
+    pkg: userPkg,
+    cwd: userDir,
+  });
+
+  if (configFileError) {
+    signale.error(`No config file for Conjurate, try run $ conjurate --init`);
+    process.exit();
+  }
+
+  if (!Object.keys(templates).includes(folder) && !CLI.init) {
+    signale.error(`Command not found, try one of: ${Object.keys(templates)}`);
+    process.exit();
+  }
+
+  const dest = CLI.out
+    ? path.resolve(userDir, CLI.out, param)
+    : path.resolve(userDir, templates[folder], param);
+
+  if (CLI._.length >= 2) {
+    generator(CLI, { cwd: userDir, templatesRoot, templates, folder, param, dest })
+      .then(({message}) => {
+        signale.complete(message);
+        process.exit();
+      })
+      .catch(error => {
+        signale.error(error.message);
+        process.exit();
+      });
+  }
 }

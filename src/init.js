@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const prompts = require('prompts');
 const writePkg = require('write-pkg');
-const { CONJURATE_CONFIG_JSON } = require('./help');
+const { CONJURATE_CONFIG_JSON } = require('./content');
 
 const QUESTIONS = [
   {

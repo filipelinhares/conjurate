@@ -2,32 +2,28 @@ const path = require('path');
 const fs = require('fs-extra');
 const walkSync = require('walk-sync');
 const tempy = require('tempy');
-const { Signale } = require('signale');
-
-const interactive = new Signale({ interactive: true });
+const signale = require('signale');
 
 const { findAll, caseFn } = require('./util.js');
 
 const REGEX_CASES = /%camel%|%constant%|%lower%|%lcFirst%|%no%|%kebab%|%pascal%|%path%|%sentence%|%snake%|%swap%|%title%|%upper%|%ucFirst%/g;
 
-module.exports = async (cli, { dest, cwd, templates, folder, param }) => {
+module.exports = async (
+  cli,
+  { dest, cwd, templatesRoot, templates, folder, param },
+) => {
+  signale.success('start generating...');
   const tmpFolder = path.resolve(tempy.directory(), folder);
-  const templatesFolder = path.resolve(cwd, templates, folder);
+  const templatesFolder = path.resolve(cwd, templatesRoot, folder);
 
   const follow = await fs.exists(templatesFolder);
 
   if (!follow) {
-    interactive.error(
-`${param} template does not exist
-
-
-`);
-    process.exit();
+    throw new Error(`${templatesRoot}/${folder} template does not exist`);
   }
 
   await fs.copy(templatesFolder, tmpFolder);
   const paths = walkSync(tmpFolder);
-
 
   const promises = paths.map(async file => {
     const fileLocation = path.join(tmpFolder, file);
@@ -45,13 +41,15 @@ module.exports = async (cli, { dest, cwd, templates, folder, param }) => {
 
       await fs.rename(fileLocation, newFileName);
       await fs.writeFile(newFileName, l);
+      signale.success(`${path.basename(newFileName)} created!`);
     }
   });
 
   await Promise.all(promises);
 
   await fs.copy(tmpFolder, dest);
-  interactive.success(`created ${param}`);
 
   await fs.remove(tmpFolder);
+
+  return { message: `${folder} created in ${templates[folder]}/${param}` };
 };

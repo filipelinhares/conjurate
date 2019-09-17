@@ -1,16 +1,16 @@
 const path = require('path');
 const fs = require('fs-extra');
 const changeCase = require('change-case');
+const signale = require('signale');
 
 const findAll = search => new RegExp(search, 'g');
 
-const isEmpty = obj => (obj && Object.keys(obj).length === 0);
+const isEmpty = obj => !obj || (obj && Object.keys(obj).length === 0);
 
 const caseFn = match => changeCase[match.replace(/%/g, '')];
 
 const readConfigFile = ({ pkg, cwd }) => {
   const config = pkg.conjurate;
-
   if (isEmpty(config)) {
     try {
       const configPath = path.resolve(cwd, './.conjurate.json');
@@ -18,7 +18,7 @@ const readConfigFile = ({ pkg, cwd }) => {
       return JSON.parse(file);
     } catch (error) {
       if (error.code === 'ENOENT') {
-        throw new Error('Has no config for the wekead');
+        return { error: true };
       }
     }
   }
