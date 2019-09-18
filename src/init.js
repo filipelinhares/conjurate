@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const prompts = require('prompts');
 const writePkg = require('write-pkg');
+const signale = require('signale');
 const { CONJURATE_CONFIG_JSON } = require('./content');
 
 const QUESTIONS = [
@@ -28,7 +29,7 @@ const QUESTIONS = [
   },
 ];
 
-const mergeWithPackageConfig = ({ pkg, cwd }) => {
+const mergeWithPackageConfig = ({ pkg = {}, cwd }) => {
   pkg.conjurate = JSON.parse(CONJURATE_CONFIG_JSON);
   const { conjurate } = pkg;
 
@@ -48,6 +49,7 @@ const setup = async ({ pkg, cwd }) => {
   }
 
   if (response.confirm && response.place === 'package.json') {
+    signale.log('asas');
     mergeWithPackageConfig({ pkg, cwd });
   }
 };
