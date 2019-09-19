@@ -33,7 +33,7 @@ npm install --save-dev conjurate
 
 ## 2.0 Getting start
 
-##### 2.1 Create the files of your template using the [5.0 tempate's]() placeholder.
+##### 2.1 Create the files of your template using the [5.0 template's](50-templates) placeholder
 
 The name "`component`" must be the same used in the config file in [2.3](#23-change-templates-name-and-default-destination-folder)
 
@@ -54,7 +54,7 @@ import React from 'react';
 import %camel%Style from './%kebab%.css' 
 ```
 
-##### 2.2 Run conjurate initial command to genrate a config file or add the config to package.json.
+##### 2.2 Run conjurate initial command to genrate a config file or add the config to package.json
 
 ```bash
 conjurate --init
@@ -83,7 +83,7 @@ conjurate --init
 }
 ```
 
-##### 2.3 Change templates name and default destination folder.
+##### 2.3 Change templates name and default destination folder
 
 ```diff
 {
@@ -96,7 +96,7 @@ conjurate --init
 }
 ```
 
-##### 2.4 Run conjurate passing the `template-name` and the placeholder name.
+##### 2.4 Run conjurate passing the `template-name` and the placeholder name
 
 ```bash
 conjurate component paper-input
@@ -153,9 +153,38 @@ It will be the generated folder name inside destination folder configured in [2.
 
 ***4.1 templatesRoot***
 
+This is the folder where you keep your templates.
+
+```
+├── conjurate
+├── src
+└── package.json
+```
+
+
+
 **4.2 templates**
 
-## 5.0 Tempates
+Templates have a name and a default destination directory.
+
+The name of the folder **is the same** used in the CLI when you run the generator.
+
+```
+├── conjurate
+│   └── template-name
+│       ├── %camel%.js
+│       └── %kebab%.scss
+├── src
+└── package.json
+```
+
+```bash
+$ conjurate template-name placeholder-name [--out ./replace/destination/placeholder-dir]
+```
+
+
+
+## 5.0 Templates
 
 You can use a placeholder when developing your templates to help with customization. It will be replaced by the <placeholder-name> and can be used in files names and in file content. (directory name will be allowed in next versions). _In our example it was `paper-input`._
 
