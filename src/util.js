@@ -30,11 +30,6 @@ const readConfigFile = ({ pkg, cwd }) => {
 };
 
 const readPackagesFile = ({ cwd }) => {
-  const conjuratePackageJSON = readPkgUp.sync({
-    cwd: __dirname,
-    normalize: false,
-  });
-
   const userPackageJson = readPkgUp.sync({
     cwd,
     normalize: false,
@@ -42,7 +37,6 @@ const readPackagesFile = ({ cwd }) => {
 
   return { 
     userPkg: userPackageJson && userPackageJson.package,
-    conjuratePkg: conjuratePackageJSON && conjuratePackageJSON.package,
   };
 }
 

@@ -10,7 +10,22 @@ const { readConfigFile, readPackagesFile } = require('./src/util.js');
 const userDir = process.cwd();
 const argv = process.argv.slice(2);
 
+if (CLI.version) {
+  signale.log(conjuratePkg.version);
+  process.exit();
+}
+
+if (CLI.help) {
+  signale.log(HELP);
+  process.exit();
+}
+
 const { userPkg, conjuratePkg } = readPackagesFile({ cwd: userDir });
+
+const { error: configFileError, templates, templatesRoot = './conjurate' } = readConfigFile({
+    pkg: userPkg,
+    cwd: userDir,
+  });
 
 const CLI = mri(argv, {
   alias: {
@@ -26,25 +41,10 @@ if (CLI.init) {
     .catch(() => process.exit());
 }
 
-if (CLI.version) {
-  signale.log(conjuratePkg.version);
-  process.exit();
-}
-
-if (CLI.help) {
-  signale.log(HELP);
-  process.exit();
-}
-
 if (!CLI.init) {
   const ARGS = CLI._;
   const folder = ARGS[0];
   const param = ARGS[1];
-
-  const { error: configFileError, templates, templatesRoot = './conjurate' } = readConfigFile({
-    pkg: userPkg,
-    cwd: userDir,
-  });
 
   if (configFileError) {
     signale.error(`No config file for Conjurate, try run $ conjurate --init`);
