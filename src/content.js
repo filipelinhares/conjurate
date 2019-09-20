@@ -1,5 +1,14 @@
 const chalk = require('chalk');
 
+const COMMANDS = templates => (
+`
+  ${chalk.bold('Conjurate')} - Easy file generation
+
+  ${chalk.italic.gray('Your commands:')}
+${Object.keys(templates).map(t => `  • ${chalk.bold(t)} ⇢ ${chalk.italic.gray(templates[t])}`).join('\n')}
+`
+)
+
 const HELP = `
   ${chalk.bold('Conjurate')} - Easy file generation
   
@@ -30,5 +39,6 @@ const CONJURATE_CONFIG_JSON = `
 `
 module.exports = {
   CONJURATE_CONFIG_JSON,
-  HELP
+  HELP,
+  COMMANDS
 }

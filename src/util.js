@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('fs-extra');
 const readPkgUp = require('read-pkg-up');
+const resolvePkg = require('resolve-pkg');
 
 const findAll = search => new RegExp(search, 'g');
 
@@ -21,12 +22,20 @@ const readConfigFile = ({ pkg, cwd }) => {
     config = JSON.parse(configJSON);
   }
 
-  let { templatesRoot } = config;
+  let { templatesRoot, templates } = config;
   if (templatesRoot.startsWith('~')) {
-    templatesRoot = resolvePkg(templatesRoot.substring(1));
+    const pkgTemplates = templatesRoot.substring(1);
+    const pkgTemplatesRoot = resolvePkg(pkgTemplates);
+    const pkgTempaltesPath = path.resolve(pkgTemplatesRoot, 'templates');
+    const exists = fs.existsSync(pkgTempaltesPath);
+    if (!exists) {
+      return { error: true };
+    }
+    templatesRoot = pkgTempaltesPath;
+    templates = require(pkgTemplates);
   }
 
-  return { ...config, templatesRoot};
+  return { templates, templatesRoot};
 };
 
 const readPackagesFile = ({ cwd }) => {

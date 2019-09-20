@@ -40,6 +40,7 @@
     "eslint-config-prettier": "^6.3.0",
     "eslint-plugin-prettier": "^3.1.0",
     "file-test": "^1.0.0",
+    "husky": "^3.0.5",
     "jest": "^24.9.0",
     "prettier": "^1.18.2",
     "xo": "^0.24.0"
@@ -55,5 +56,10 @@
     "plugins": [
       "prettier"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test"
+    }
   }
 }
