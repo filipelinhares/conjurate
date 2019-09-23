@@ -9,28 +9,31 @@ const isEmpty = obj => !obj || (obj && Object.keys(obj).length === 0);
 
 const readConfigFile = ({ pkg, cwd }) => {
   let config = pkg.conjurate;
-
   if (isEmpty(config)) {
     const configPath = path.resolve(cwd, './.conjurate.json');
-    const exists = fs.existsSync(configPath);
+    const exists = await fs.exists(configPath);
 
     if (!exists) {
       return { error: true };
     }
 
-    const configJSON = fs.readFileSync(configPath);
+    const configJSON = await fs.readFile(configPath);
     config = JSON.parse(configJSON);
   }
 
+
   let { templatesRoot, templates } = config;
+
   if (templatesRoot.startsWith('~')) {
     const pkgTemplates = templatesRoot.substring(1);
     const pkgTemplatesRoot = resolvePkg(pkgTemplates);
     const pkgTempaltesPath = path.resolve(pkgTemplatesRoot, 'templates');
-    const exists = fs.existsSync(pkgTempaltesPath);
+    const exists = await fs.exists(pkgTempaltesPath);
+
     if (!exists) {
       return { error: true };
     }
+
     templatesRoot = pkgTempaltesPath;
     templates = require(pkgTemplates);
   }

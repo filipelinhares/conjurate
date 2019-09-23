@@ -46,10 +46,11 @@ const setup = async ({ pkg, cwd }) => {
       path.resolve(cwd, '.conjurate.json'),
       CONJURATE_CONFIG_JSON,
     );
+    signale.success(`Created .conjurate.json`);
   }
 
   if (response.confirm && response.place === 'package.json') {
-    signale.log('asas');
+    signale.success(`Config added to your package.json`);
     mergeWithPackageConfig({ pkg, cwd });
   }
 };

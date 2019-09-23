@@ -9,8 +9,7 @@
   "scripts": {
     "test": "xo && jest",
     "test:lint": "xo",
-    "test:unit": "jest",
-    "fake": "node ./src/generator.js"
+    "test:unit": "jest"
   },
   "repository": {
     "type": "git",
