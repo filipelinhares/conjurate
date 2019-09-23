@@ -3,9 +3,8 @@ const path = require('path');
 const mri = require('mri');
 const signale = require('signale');
 const generator = require('./src/generator');
-const { HELP, printCommands } = require('./src/content.js');
+const { HELP, printCommands, VERSION } = require('./src/content.js');
 const setup = require('./src/init.js');
-const conjuratePkg = require('./package.json');
 const { readConfigFile, readPackagesFile } = require('./src/util.js');
 
 const userDir = process.cwd();
@@ -75,7 +74,7 @@ async function main (cli) {
 }
 
 if (CLI.version) {
-  signale.log(conjuratePkg.version);
+  signale.log(VERSION);
   process.exit();
 }
 
