@@ -33,28 +33,7 @@ npm install --save-dev conjurate
 
 ## 2.0 Getting start
 
-##### 2.1 Create the files of your template using the [5.0 template's](#50-templates) placeholder
-
-The name "`component`" must be the same used in the config file in [2.3](#23-change-templates-name-and-default-destination-folder)
-
-```diff
-├── conjurate
-│   └── component
-│       ├── %kebab%.js
-│       └── %kebab%.css
-├── components
-├── package-lock.json
-└── package.json
-```
-
-```javascript
-./conjurate/component/%kebab%.js
-
-import React from 'react';
-import %camel%Style from './%kebab%.css' 
-```
-
-##### 2.2 Run conjurate initial command to genrate a config file or add the config to package.json
+##### 2.1 Run conjurate initial command to genrate a config file or add the config to package.json
 
 ```bash
 conjurate --init
@@ -83,7 +62,7 @@ conjurate --init
 }
 ```
 
-##### 2.3 Change templates name and default destination folder
+##### 2.2 Change templates name and default destination folder
 
 ```diff
 {
@@ -94,6 +73,27 @@ conjurate --init
 +    "component": "./components"
   }
 }
+```
+
+##### 2.3 Create the files of your template using the [5.0 template's](#50-templates) placeholder
+
+The name "`component`" must be the same used in the config file in [2.3](#22-change-templates-name-and-default-destination-folder)
+
+```diff
+├── conjurate
+│   └── component
+│       ├── %kebab%.js
+│       └── %kebab%.css
+├── components
+├── package-lock.json
+└── package.json
+```
+
+```javascript
+./conjurate/component/%kebab%.js
+
+import React from 'react';
+import %camel%Style from './%kebab%.css' 
 ```
 
 ##### 2.4 Run conjurate passing the `template-name` and the placeholder name
@@ -130,15 +130,15 @@ conjurate component paper-input
 conjurate <template-name> <placeholder-name> [--out ./output]
 ```
 
-**3.1 <template-name>**
+**3.1 `<template-name>`**
 
-The template name configured in [2.3](#23-change-templates-name-and-default-destination-folder).
+The template name configured in [2.3](#22-change-templates-name-and-default-destination-folder).
 
-**3.2 <placeholder-name>** 
+**3.2 `<placeholder-name>`** 
 
-It will be the generated folder name inside destination folder configured in [2.3](#23-change-templates-name-and-default-destination-folder).
+It will be the generated folder name inside destination folder configured in [2.3](#22-change-templates-name-and-default-destination-folder).
 
-**3.3 --out**` overwrite conjurate config file.
+**3.3 --out**` overwrite default-destination-dir in config file for used template.
 
 ## 4.0 Config
 
@@ -160,7 +160,13 @@ This is the folder where you keep your templates.
 ├── src
 └── package.json
 ```
-  **4.1.1 Using npm packages**
+**4.1.1 Using npm packages**
+```json
+{
+  "templatesRoot": "~package-name",
+}
+```
+TODO
 
 **4.2 templates**
 
