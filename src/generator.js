@@ -4,9 +4,8 @@ const walkSync = require('walk-sync');
 const tempy = require('tempy');
 const signale = require('signale');
 
-const { findAll, caseFn } = require('./util.js');
-
-const REGEX_CASES = /%camel%|%constant%|%lower%|%lcFirst%|%no%|%kebab%|%pascal%|%path%|%sentence%|%snake%|%swap%|%title%|%upper%|%ucFirst%/g;
+const { REGEX_CASES, parsePlaceholders } = require('./parser');
+const { findAll } = require('./util.js');
 
 module.exports = async (
   cli,
@@ -32,11 +31,11 @@ module.exports = async (
     if (fileStat.isFile()) {
       const x = await fs.readFile(fileLocation, 'utf8');
       const l = x.replace(findAll(REGEX_CASES), match => {
-        return caseFn(match)(param);
+        return parsePlaceholders({ match, replace: param });
       });
 
       const newFileName = fileLocation.replace(findAll(REGEX_CASES), match => {
-        return caseFn(match)(param);
+        return parsePlaceholders({ match, replace: param })
       });
 
       await fs.rename(fileLocation, newFileName);
