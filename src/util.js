@@ -1,42 +1,68 @@
 const path = require('path');
 const fs = require('fs-extra');
 const readPkgUp = require('read-pkg-up');
+const resolvePkg = require('resolve-pkg');
 
 const findAll = search => new RegExp(search, 'g');
 
 const isEmpty = obj => !obj || (obj && Object.keys(obj).length === 0);
 
-const readConfigFile = ({ pkg, cwd }) => {
-  const config = pkg.conjurate;
+const ERRORS = {
+  configFile: 'CONFIG_FILE_ERROR',
+  templatePackages: 'PACKAGE_NOT_FOUND_ERROR'
+}
+
+const readConfigFile = async ({ pkg, cwd }) => {
+  let config = pkg.conjurate;
   if (isEmpty(config)) {
-    try {
-      const configPath = path.resolve(cwd, './.conjurate.json');
-      const file = fs.readFileSync(configPath);
-      return JSON.parse(file);
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        return { error: true };
-      }
+    const configPath = path.resolve(cwd, './.conjurate.json');
+    const exists = await fs.exists(configPath);
+
+    if (!exists) {
+      return { error: true };
     }
+
+    const configJSON = await fs.readFile(configPath);
+    config = JSON.parse(configJSON);
   }
 
-  return config;
+
+  let { templatesRoot, templates } = config;
+
+  if (templatesRoot.startsWith('~')) {
+    const pkgTemplates = templatesRoot.slice(1);
+    const pkgTemplatesRoot = resolvePkg(pkgTemplates);
+    
+    if (!pkgTemplatesRoot) {
+      return { error: ERRORS.templatesPackage, templatesRoot: pkgTemplates }
+    }
+
+    const pkgTempaltesPath = path.resolve(pkgTemplatesRoot, 'templates');
+    const exists = await fs.exists(pkgTempaltesPath);
+
+    if (!exists) {
+      return { error: ERRORS.configFile };
+    }
+
+    templatesRoot = pkgTempaltesPath;
+    templates = require(pkgTemplatesRoot);
+  }
+
+  if (isEmpty(templates) || isEmpty(templatesRoot)) {
+    return { error: ERRORS.configFile };
+  }
+
+  return { templates, templatesRoot};
 };
 
 const readPackagesFile = ({ cwd }) => {
-  const conjuratePackageJSON = readPkgUp.sync({
-    cwd: __dirname,
-    normalize: false,
-  });
-
   const userPackageJson = readPkgUp.sync({
     cwd,
     normalize: false,
   });
 
   return { 
-    userPkg: userPackageJson && userPackageJson.package,
-    conjuratePkg: conjuratePackageJSON && conjuratePackageJSON.package,
+    userPkg: userPackageJson && userPackageJson.packageJson,
   };
 }
 
@@ -44,4 +70,5 @@ module.exports = {
   findAll,
   readConfigFile,
   readPackagesFile,
+  ERRORS
 };

@@ -1,26 +1,37 @@
 const chalk = require('chalk');
+const conjuratePkg = require('../package.json');
+
+const VERSION = conjuratePkg.version;
+
+const printCommands = templates => (
+  `
+  ${chalk.italic.gray('Your templates:')}
+${Object.keys(templates).map(t => `  • ${chalk.bold(t)} ⇢ ${chalk.dim('--output:')} ${chalk.italic.gray(templates[t])}`).join('\n')}
+`
+)
 
 const HELP = `
-  ${chalk.bold('Conjurate')} - Easy file generation
+  ${chalk.bold('Conjurate')}@${VERSION} - ${chalk.italic('Easy scaffolding tool')}
   
-  ${chalk.italic.gray('Start a project:')}
+  ${chalk.italic.gray('Create config file or add to package.json:')}
     conjurate --init
 
   ${chalk.italic.gray('Usage:')}
     conjurate <template-name> <placeholder-name>
 
   ${chalk.italic.gray('Options:')}
-
     -o, --out        overwrite the default destination dir for choose template.
     -v, --version    show version number
     -h, --help       show this message
+    -t, --templates  print templates listed in your conjurate config
 
   ${chalk.italic.gray('Docs:')}
-    github.com/filipelinhares/conjurate
+    https://github.com/filipelinhares/conjurate
+    https://conjurate.surge.sh
 `;
 
-const CONJURATE_CONFIG_JSON = `
-{
+const CONJURATE_CONFIG_JSON =
+`{
   "templatesRoot": "./conjurate",
   "templates": {
     "<template-name>": "./<default-destination-dir>",
@@ -28,7 +39,10 @@ const CONJURATE_CONFIG_JSON = `
   }
 }
 `
+
 module.exports = {
   CONJURATE_CONFIG_JSON,
-  HELP
+  HELP,
+  VERSION,
+  printCommands,
 }
