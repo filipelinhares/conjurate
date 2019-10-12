@@ -5,15 +5,13 @@ const VERSION = conjuratePkg.version;
 
 const printCommands = templates => (
   `
-  ${chalk.bold('Conjurate')} - Easy file generation
-
   ${chalk.italic.gray('Your templates:')}
-${Object.keys(templates).map(t => `  • ${chalk.bold(t)} ⇢ ${chalk.italic.gray(templates[t])}`).join('\n')}
+${Object.keys(templates).map(t => `  • ${chalk.bold(t)} ⇢ ${chalk.dim('--output:')} ${chalk.italic.gray(templates[t])}`).join('\n')}
 `
 )
 
 const HELP = `
-  ${chalk.bold('Conjurate')}@${VERSION} - ${chalk.italic('Easy structure generation')}
+  ${chalk.bold('Conjurate')}@${VERSION} - ${chalk.italic('Easy generator')}
   
   ${chalk.italic.gray('Create config file or add to package.json:')}
     conjurate --init

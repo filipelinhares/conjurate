@@ -20,7 +20,7 @@ module.exports = async (
     throw new Error(`${templatesRoot}/${folder} template does not exist`);
   }
 
-  signale.success('start generating...');
+  signale.info('Generating...');
   await fs.copy(templatesFolder, tmpFolder);
   const paths = walkSync(tmpFolder);
 
@@ -40,9 +40,10 @@ module.exports = async (
 
       await fs.rename(fileLocation, newFileName);
       await fs.writeFile(newFileName, l);
-      signale.success(`${path.basename(newFileName)} created!`);
     }
   });
+
+  signale.success(`Done!`);
 
   await Promise.all(promises);
 

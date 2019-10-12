@@ -15,7 +15,8 @@ const CLI = mri(argv, {
     v: 'version',
     h: 'help',
     i: 'init',
-    t: 'templates'
+    t: 'templates',
+    o: 'output',
   },
 });
 
@@ -37,7 +38,7 @@ async function main (cli) {
   });
 
   if (configFileError) {
-    signale.error(`No config file for Conjurate, try run $ conjurate --init`);
+    signale.error(`Conjurate config malformed or does not exists. Try running $ conjurate --init`);
     process.exit();
   }
 
@@ -52,11 +53,14 @@ async function main (cli) {
     const param = ARGS[1];
 
     if (!Object.keys(templates).includes(folder) && !cli.init) {
-      signale.error(`Command not found, try one of: ${Object.keys(templates)}`);
+      signale.error(
+        `Command not found, try one of:
+          ${printCommands(templates)}`
+      );
       process.exit();
     }
 
-    const dest = cli.out
+    const dest = cli.output
       ? path.resolve(userDir, cli.out, param)
       : path.resolve(userDir, templates[folder], param);
 

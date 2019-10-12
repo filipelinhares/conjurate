@@ -7,7 +7,7 @@ const findAll = search => new RegExp(search, 'g');
 
 const isEmpty = obj => !obj || (obj && Object.keys(obj).length === 0);
 
-const readConfigFile = ({ pkg, cwd }) => {
+const readConfigFile = async ({ pkg, cwd }) => {
   let config = pkg.conjurate;
   if (isEmpty(config)) {
     const configPath = path.resolve(cwd, './.conjurate.json');
@@ -35,7 +35,11 @@ const readConfigFile = ({ pkg, cwd }) => {
     }
 
     templatesRoot = pkgTempaltesPath;
-    templates = require(pkgTemplates);
+    templates = require(pkgTemplatesRoot);
+  }
+
+  if (!isEmpty(templates) || !isEmpty(templatesRoot)) {
+    return { error: true };
   }
 
   return { templates, templatesRoot};
