@@ -9,31 +9,39 @@
 [![npm][npm-image]][npm-url] [![license][license-image]][license-url]
 [![changelog][changelog-image]][changelog-url] [![travis][travis-img]][travis-url]
 
+
 ## 1.0 Instalation
 
-**1.1 Globally**
+### 1.1 Global
 
 ```bash
 npm install -g conjurate
 ```
 
-**1.2 Locally**
+### 1.2 Local
 
 ```bash
 npm install --save-dev conjurate
 ```
 
 ```json
+// package.json
 {
-	"scripts": {
-		"gen": "conjurate"
-	}
+  "scripts": {
+    "gen": "conjurate"
+  }
 }
 ```
 
-## 2.0 Getting start
+### 1.3 npx
 
-##### 2.1 Run conjurate initial command to genrate a config file or add the config to package.json
+```bash
+npx conjurate
+```
+
+## 2.0 Get started
+
+#### 2.1 Run conjurate initial command to generate a config file or add the config to package.json
 
 ```bash
 conjurate --init
@@ -62,7 +70,7 @@ conjurate --init
 }
 ```
 
-##### 2.2 Change templates name and default destination folder
+#### 2.2 Change templates name and default destination folder
 
 ```diff
 {
@@ -75,7 +83,7 @@ conjurate --init
 }
 ```
 
-##### 2.3 Create the files of your template using the [5.0 template's](#50-templates) placeholder
+#### 2.3 Create the files of your template using the [5.0 template's](#50-templates) placeholder
 
 The name "`component`" must be the same used in the config file in [2.3](#22-change-templates-name-and-default-destination-folder)
 
@@ -96,7 +104,7 @@ import React from 'react';
 import %camel%Style from './%kebab%.css' 
 ```
 
-##### 2.4 Run conjurate passing the `template-name` and the placeholder name
+#### 2.4 Run conjurate passing the `template-name` and the placeholder content
 
 ```bash
 conjurate component paper-input
@@ -124,21 +132,36 @@ conjurate component paper-input
 +import paperInputStyle from './paper-input.css' 
 ```
 
-## 3.0 Usage
+## 3.0 CLI
 
+### 3.1.1 Generate command:
 ```bash
-conjurate <template-name> <placeholder-name> [--out ./output]
+conjurate <template-name> <placeholder-content> [--output ./output]
 ```
 
-**3.1 `<template-name>`**
+#### 3.1.2 Template name
+`<template-name>`
 
 The template name configured in [2.3](#22-change-templates-name-and-default-destination-folder).
 
-**3.2 `<placeholder-name>`** 
+#### 3.1.3 Placeholders
+`<placeholder-content>`
 
 It will be the generated folder name inside destination folder configured in [2.3](#22-change-templates-name-and-default-destination-folder).
 
-**3.3 --out**` overwrite default-destination-dir in config file for used template.
+### 3.2 Change output dir
+- `--output`
+- alias `-o`
+
+Overwrite default-destination-dir in config file for used template.
+
+### 3.3 List your templates configured in Conjurate __[config](#42-templates)__
+- `--templates`
+- alias: `-t`
+
+### 3.4 Show help message
+- `--help`
+- alias: `-h`
 
 ## 4.0 Config
 
@@ -151,7 +174,7 @@ It will be the generated folder name inside destination folder configured in [2.
 }
 ```
 
-***4.1 templatesRoot***
+### 4.1 `templatesRoot`
 
 This is the folder where you keep your templates.
 
@@ -160,19 +183,18 @@ This is the folder where you keep your templates.
 ├── src
 └── package.json
 ```
-**4.1.1 Using npm packages**
+#### 4.1.1 Using npm packages
 ```json
 {
   "templatesRoot": "~package-name",
 }
 ```
-TODO
 
-**4.2 templates**
+### 4.2 templates
 
 Templates have a name and a default destination directory.
 
-The name of the folder **is the same** used in the CLI when you run the generator.
+The name of the folder is the same used in the CLI when you run the generator.
 
 ```
 ├── conjurate
@@ -184,50 +206,41 @@ The name of the folder **is the same** used in the CLI when you run the generato
 ```
 
 ```bash
-$ conjurate template-name placeholder-name [--out ./replace/destination/placeholder-dir]
+$ conjurate template-name placeholder-content [--output ./replace/destination/placeholder-dir]
 ```
 
 
 
 ## 5.0 Templates
 
-You can use a placeholder when developing your templates to help with customization. It will be replaced by the <placeholder-name> and can be used in files names and in file content. (directory name will be allowed in next versions). _In our example it was `paper-input`._
+You can use a placeholder when developing your templates to help with customization. It will be replaced by the <placeholder-content> and can be used in files names and in file content. (directory name will be allowed in next versions). _In our example it was `paper-input`._
 
 In the example we used `%camel%` and `%kebab%` but you have more options. They are inherited from [change-chase]() package, eg:
 
+__If you want to use space in the placeholder content use quotes.__
 ```bash
 conjurate component "test string"
 ```
 
-If you want to use space in the placeholder name use string.
 
-`%camel%`:  => `testString`
-
-`%constant%` => `TEST_STRING`
-
-`%lower%` => `test_string`
-
-`%lcFirst%` => `tEST`
-
-`%no% `do nothing
-
-`%kebab%` => `test-case`
-
-`%pascal%` => `TestString`
-
-`%path%` => `test/string`
-
-`%sentence%` => `Test string`
-
-`%snake%` => `test_string`
-
-`%swap%`=> `TEST STRING`
-
-`%title%` => `Test String`
-
-`%upper%`=> `TEST STRING`
-
-`%ucFirst` => `Test string`
+| Placeholders | Result of "test string"|
+| --- | -- |
+|`%camel%`:  | `testString`|
+|`%constant%` | `TEST_STRING`|
+|`%lower%` | `test_string`|
+|`%lcFirst%` | `tEST`|
+|`%no% `|do nothing|
+|`%kebab%` | `test-case`|
+|`%pascal%` | `TestString`|
+|`%path%` | `test/string`|
+|`%sentence%` | `Test string`|
+|`%snake%` | `test_string`|
+|`%swap%`| `TEST STRING`|
+|`%title%` | `Test String`|
+|`%upper%`| `TEST STRING`|
+|`%ucFirst` | `Test string`|
+|`%first%`| `Test`|
+|`%last%`| `string`|
 
 ## Development
 
