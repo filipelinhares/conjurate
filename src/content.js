@@ -11,7 +11,7 @@ ${Object.keys(templates).map(t => `  • ${chalk.bold(t)} ⇢ ${chalk.dim('--out
 )
 
 const HELP = `
-  ${chalk.bold('Conjurate')}@${VERSION} - ${chalk.italic('Easy generator')}
+  ${chalk.bold('Conjurate')}@${VERSION} - ${chalk.italic('Easy scaffolding tool')}
   
   ${chalk.italic.gray('Create config file or add to package.json:')}
     conjurate --init
@@ -26,7 +26,8 @@ const HELP = `
     -t, --templates  print templates listed in your conjurate config
 
   ${chalk.italic.gray('Docs:')}
-    github.com/filipelinhares/conjurate
+    https://github.com/filipelinhares/conjurate
+    https://conjurate.surge.sh
 `;
 
 const CONJURATE_CONFIG_JSON =

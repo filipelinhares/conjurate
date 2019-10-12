@@ -5,7 +5,7 @@ const signale = require('signale');
 const generator = require('./src/generator');
 const { HELP, printCommands, VERSION } = require('./src/content.js');
 const setup = require('./src/init.js');
-const { readConfigFile, readPackagesFile } = require('./src/util.js');
+const { readConfigFile, readPackagesFile, ERRORS } = require('./src/util.js');
 
 const userDir = process.cwd();
 const argv = process.argv.slice(2);
@@ -37,8 +37,13 @@ async function main (cli) {
     cwd: userDir,
   });
 
-  if (configFileError) {
+  if (configFileError === ERRORS.configFile) {
     signale.error(`Conjurate config malformed or does not exists. Try running $ conjurate --init`);
+    process.exit();
+  }
+
+  if (configFileError === ERRORS.templatesPackage) {
+    signale.error(`Package ${templatesRoot} not found, try npm install --save-dev ${templatesRoot}`);
     process.exit();
   }
 

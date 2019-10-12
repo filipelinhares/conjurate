@@ -7,6 +7,11 @@ const findAll = search => new RegExp(search, 'g');
 
 const isEmpty = obj => !obj || (obj && Object.keys(obj).length === 0);
 
+const ERRORS = {
+  configFile: 'CONFIG_FILE_ERROR',
+  templatePackages: 'PACKAGE_NOT_FOUND_ERROR'
+}
+
 const readConfigFile = async ({ pkg, cwd }) => {
   let config = pkg.conjurate;
   if (isEmpty(config)) {
@@ -25,21 +30,26 @@ const readConfigFile = async ({ pkg, cwd }) => {
   let { templatesRoot, templates } = config;
 
   if (templatesRoot.startsWith('~')) {
-    const pkgTemplates = templatesRoot.substring(1);
+    const pkgTemplates = templatesRoot.slice(1);
     const pkgTemplatesRoot = resolvePkg(pkgTemplates);
+    
+    if (!pkgTemplatesRoot) {
+      return { error: ERRORS.templatesPackage, templatesRoot: pkgTemplates }
+    }
+
     const pkgTempaltesPath = path.resolve(pkgTemplatesRoot, 'templates');
     const exists = await fs.exists(pkgTempaltesPath);
 
     if (!exists) {
-      return { error: true };
+      return { error: ERRORS.configFile };
     }
 
     templatesRoot = pkgTempaltesPath;
     templates = require(pkgTemplatesRoot);
   }
 
-  if (!isEmpty(templates) || !isEmpty(templatesRoot)) {
-    return { error: true };
+  if (isEmpty(templates) || isEmpty(templatesRoot)) {
+    return { error: ERRORS.configFile };
   }
 
   return { templates, templatesRoot};
@@ -52,7 +62,7 @@ const readPackagesFile = ({ cwd }) => {
   });
 
   return { 
-    userPkg: userPackageJson && userPackageJson.package,
+    userPkg: userPackageJson && userPackageJson.packageJson,
   };
 }
 
@@ -60,4 +70,5 @@ module.exports = {
   findAll,
   readConfigFile,
   readPackagesFile,
+  ERRORS
 };
