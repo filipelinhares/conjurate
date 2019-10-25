@@ -5,7 +5,7 @@ const signale = require('signale');
 const generator = require('./src/generator');
 const { HELP, printCommands, VERSION } = require('./src/content.js');
 const setup = require('./src/init.js');
-const { readConfigFile, readPackagesFile, ERRORS } = require('./src/util.js');
+const { readConfigFile, readPackagesFile, ERRORS, isEmpty } = require('./src/util.js');
 
 const userDir = process.cwd();
 const argv = process.argv.slice(2);
@@ -19,6 +19,16 @@ const CLI = mri(argv, {
     o: 'output',
   },
 });
+
+if (CLI.version) {
+  signale.log(VERSION);
+  process.exit();
+}
+
+if (CLI.help || isEmpty(argv)) {
+  signale.log(HELP);
+  process.exit();
+}
 
 async function main (cli) {
   const { userPkg } = readPackagesFile({ cwd: userDir });
@@ -51,7 +61,7 @@ async function main (cli) {
     signale.log(printCommands(templates))
     process.exit();
   }
-  
+
   else {
     const ARGS = cli._;
     const folder = ARGS[0];
@@ -80,16 +90,6 @@ async function main (cli) {
       });
     }
   }
-}
-
-if (CLI.version) {
-  signale.log(VERSION);
-  process.exit();
-}
-
-if (CLI.help) {
-  signale.log(HELP);
-  process.exit();
 }
 
 main(CLI);

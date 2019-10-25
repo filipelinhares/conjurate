@@ -5,7 +5,13 @@ const resolvePkg = require('resolve-pkg');
 
 const findAll = search => new RegExp(search, 'g');
 
-const isEmpty = obj => !obj || (obj && Object.keys(obj).length === 0);
+const isEmpty = obj => {
+  if (Array.isArray(obj)) {
+    return obj.length === 0;
+  }
+
+  return !obj || (obj && Object.keys(obj).length === 0)
+};
 
 const ERRORS = {
   configFile: 'CONFIG_FILE_ERROR',
@@ -19,7 +25,7 @@ const readConfigFile = async ({ pkg, cwd }) => {
     const exists = await fs.exists(configPath);
 
     if (!exists) {
-      return { error: true };
+      return { error: ERRORS.configFile };
     }
 
     const configJSON = await fs.readFile(configPath);
@@ -32,7 +38,7 @@ const readConfigFile = async ({ pkg, cwd }) => {
   if (templatesRoot.startsWith('~')) {
     const pkgTemplates = templatesRoot.slice(1);
     const pkgTemplatesRoot = resolvePkg(pkgTemplates);
-    
+
     if (!pkgTemplatesRoot) {
       return { error: ERRORS.templatesPackage, templatesRoot: pkgTemplates }
     }
@@ -61,7 +67,7 @@ const readPackagesFile = ({ cwd }) => {
     normalize: false,
   });
 
-  return { 
+  return {
     userPkg: userPackageJson && userPackageJson.packageJson,
   };
 }
@@ -70,5 +76,6 @@ module.exports = {
   findAll,
   readConfigFile,
   readPackagesFile,
-  ERRORS
+  ERRORS,
+  isEmpty
 };
