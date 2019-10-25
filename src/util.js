@@ -15,7 +15,7 @@ const isEmpty = obj => {
 
 const ERRORS = {
   configFile: 'CONFIG_FILE_ERROR',
-  templatePackages: 'PACKAGE_NOT_FOUND_ERROR'
+  templatesPackages: 'PACKAGE_NOT_FOUND_ERROR'
 }
 
 const readConfigFile = async ({ pkg, cwd }) => {

@@ -47,12 +47,12 @@ async function main (cli) {
     cwd: userDir,
   });
 
-  if (configFileError === ERRORS.configFile) {
+  if (configFileError && configFileError === ERRORS.configFile) {
     signale.error(`Conjurate config malformed or does not exists. Try running $ conjurate --init`);
     process.exit();
   }
 
-  if (configFileError === ERRORS.templatesPackage) {
+  if (configFileError && configFileError === ERRORS.templatesPackages) {
     signale.error(`Package ${templatesRoot} not found, try npm install --save-dev ${templatesRoot}`);
     process.exit();
   }
