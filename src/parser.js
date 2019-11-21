@@ -1,43 +1,29 @@
-const caseFn = require('change-case');
+const { REGEX_CASES, renderPlaceholders } = require("./placeholders");
+const { findAll } = require("./util");
 
-const getFirst = (str) => {
-  const word = caseFn.kebab(str).split('-');
-  const [first] = word;
-  return first;
-}
+const parseFileAndDirName = ({ placeholder }) => args => {
+  if (args.isDirectory() || args.isBuffer()) {
+    args.basename = args.basename.replace(findAll(REGEX_CASES), match => {
+      return renderPlaceholders({ match, replace: placeholder });
+    });
+  }
 
-const getLast = (str) => {
-  const word = caseFn.kebab(str).split('-');
-  const last = word.slice(-1).pop();
-  return last;
-}
-
-const placeholderMap = {
-  '%camel%': caseFn.camel,
-  '%constant%': caseFn.constant,
-  '%lower%': caseFn.lower,
-  '%lcFirst%': caseFn.lcFirst,
-  '%no%': caseFn.no,
-  '%kebab%': caseFn.kebab,
-  '%pascal%': caseFn.pascal,
-  '%path%': caseFn.path,
-  '%sentence%': caseFn.sentence,
-  '%snake%': caseFn.snake,
-  '%swap%': caseFn.swap,
-  '%title%': caseFn.title,
-  '%upper%': caseFn.upper,
-  '%ucFirst%': caseFn.ucFirst,
-  '%first%': getFirst,
-  '%last%': getLast,
+  return args;
 };
 
-const REGEX_CASES = new RegExp(Object.keys(placeholderMap).join('|'), 'g');
+const parseFileContent = ({ placeholder }) => args => {
+  if (args.isBuffer()) {
+    args.contents = Buffer.from(
+      String(args.contents).replace(findAll(REGEX_CASES), match => {
+        return renderPlaceholders({ match, replace: placeholder });
+      })
+    );
+  }
 
-const parsePlaceholders = ({ match, replace }) => {
-  return placeholderMap[match](replace);
-}
+  return args;
+};
 
 module.exports = {
-  parsePlaceholders,
-  REGEX_CASES
-}
+  parseFileAndDirName,
+  parseFileContent
+};

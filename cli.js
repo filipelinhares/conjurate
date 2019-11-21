@@ -1,23 +1,29 @@
 #!/usr/bin/env node
-const path = require('path');
-const mri = require('mri');
-const signale = require('signale');
-const generator = require('./src/generator');
-const { HELP, printCommands, VERSION } = require('./src/content.js');
-const setup = require('./src/init.js');
-const { readConfigFile, readPackagesFile, ERRORS, isEmpty } = require('./src/util.js');
+const path = require("path");
+const fs = require("fs-extra");
+const mri = require("mri");
+const signale = require("signale");
+const generator = require("./src/generator");
+const { HELP, printCommands, VERSION } = require("./src/content.js");
+const setup = require("./src/init.js");
+const {
+  readConfigFile,
+  readPackagesFile,
+  ERRORS,
+  isEmpty
+} = require("./src/util.js");
 
 const userDir = process.cwd();
 const argv = process.argv.slice(2);
 
 const CLI = mri(argv, {
   alias: {
-    v: 'version',
-    h: 'help',
-    i: 'init',
-    t: 'templates',
-    o: 'output',
-  },
+    v: "version",
+    h: "help",
+    i: "init",
+    t: "templates",
+    o: "output"
+  }
 });
 
 if (CLI.version) {
@@ -30,39 +36,41 @@ if (CLI.help || isEmpty(argv)) {
   process.exit();
 }
 
-async function main (cli) {
+async function main(cli) {
   const { userPkg } = readPackagesFile({ cwd: userDir });
 
   if (cli.init) {
-    await setup({ pkg: userPkg, cwd: userDir })
+    await setup({ pkg: userPkg, cwd: userDir });
     process.exit();
   }
 
   const {
     error: configFileError,
     templates,
-    templatesRoot = './conjurate',
+    templatesRoot = "./conjurate"
   } = await readConfigFile({
     pkg: userPkg,
-    cwd: userDir,
+    cwd: userDir
   });
 
   if (configFileError && configFileError === ERRORS.configFile) {
-    signale.error(`Conjurate config malformed or does not exists. Try running $ conjurate --init`);
+    signale.error(
+      `Conjurate config malformed or does not exists. Try running $ conjurate --init`
+    );
     process.exit();
   }
 
   if (configFileError && configFileError === ERRORS.templatesPackages) {
-    signale.error(`Package ${templatesRoot} not found, try npm install --save-dev ${templatesRoot}`);
+    signale.error(
+      `Package ${templatesRoot} not found, try npm install --save-dev ${templatesRoot}`
+    );
     process.exit();
   }
 
   if (cli.templates) {
-    signale.log(printCommands(templates))
+    signale.log(printCommands(templates));
     process.exit();
-  }
-
-  else {
+  } else {
     const ARGS = cli._;
     const folder = ARGS[0];
     const param = ARGS[1];
@@ -80,13 +88,20 @@ async function main (cli) {
       : path.resolve(userDir, templates[folder], param);
 
     if (cli._.length >= 2) {
-      await generator(cli, {
+      const templatesFolder = path.resolve(userDir, templatesRoot, folder);
+      const follow = await fs.exists(templatesFolder);
+
+      if (!follow) {
+        throw new Error(`${templatesRoot}/${folder} template does not exist`);
+      }
+
+      generator({
         cwd: userDir,
-        templatesRoot,
+        templatesFolder,
         templates,
         folder,
         param,
-        dest,
+        dest
       });
     }
   }

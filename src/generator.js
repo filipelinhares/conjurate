@@ -1,55 +1,15 @@
-const path = require('path');
-const fs = require('fs-extra');
-const walkSync = require('walk-sync');
-const tempy = require('tempy');
-const signale = require('signale');
+const path = require("path");
+const vfs = require("vinyl-fs");
+const log = require("./log");
 
-const { REGEX_CASES, parsePlaceholders } = require('./parser');
-const { findAll } = require('./util.js');
+const { mapStream } = require("./util.js");
+const { parseFileAndDirName, parseFileContent } = require("./parser");
 
-module.exports = async (
-  cli,
-  { dest, cwd, templatesRoot, templates, folder, param },
-) => {
-  const tmpFolder = path.resolve(tempy.directory(), folder);
-  const templatesFolder = path.resolve(cwd, templatesRoot, folder);
-
-  const follow = await fs.exists(templatesFolder);
-
-  if (!follow) {
-    throw new Error(`${templatesRoot}/${folder} template does not exist`);
-  }
-
-  signale.info('Generating...');
-  await fs.copy(templatesFolder, tmpFolder);
-  const paths = walkSync(tmpFolder);
-
-  const promises = paths.map(async file => {
-    const fileLocation = path.join(tmpFolder, file);
-    const fileStat = await fs.stat(fileLocation);
-
-    if (fileStat.isFile()) {
-      const x = await fs.readFile(fileLocation, 'utf8');
-      const l = x.replace(findAll(REGEX_CASES), match => {
-        return parsePlaceholders({ match, replace: param });
-      });
-
-      const newFileName = fileLocation.replace(findAll(REGEX_CASES), match => {
-        return parsePlaceholders({ match, replace: param })
-      });
-
-      await fs.rename(fileLocation, newFileName);
-      await fs.writeFile(newFileName, l);
-    }
-  });
-
-  signale.success(`Done!`);
-
-  await Promise.all(promises);
-
-  await fs.copy(tmpFolder, dest);
-
-  await fs.remove(tmpFolder);
-
-  return { message: `${folder} created in ${templates[folder]}/${param}` };
+module.exports = ({ dest, templatesFolder, param }) => {
+  return vfs
+    .src([path.resolve(templatesFolder, "**/*")])
+    .pipe(mapStream(parseFileAndDirName({ placeholder: param })))
+    .pipe(mapStream(parseFileContent({ placeholder: param })))
+    .pipe(mapStream(log.fileCreation()))
+    .pipe(vfs.dest(dest));
 };
