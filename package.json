@@ -7,9 +7,10 @@
     "conjurate": "./cli.js"
   },
   "scripts": {
-    "test": "xo && jest",
+    "test": "npm run test:lint && npm run test:unit",
     "test:lint": "xo",
     "test:unit": "jest",
+    "test:coverage": "jest --coverage",
     "pretty": "pretty-quick"
   },
   "repository": {
@@ -26,7 +27,7 @@
     "change-case": "^3.1.0",
     "fs-extra": "^8.1.0",
     "mri": "^1.1.4",
-    "prompts": "^2.2.1",
+    "prompts": "^2.3.0",
     "read-pkg-up": "^7.0.0",
     "resolve-pkg": "^2.0.0",
     "signale": "^1.4.0",
@@ -34,10 +35,11 @@
     "write-pkg": "^4.0.0"
   },
   "devDependencies": {
-    "eslint-config-prettier": "^6.4.0",
+    "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
     "file-test": "^1.0.0",
-    "husky": "^3.0.9",
+    "fileshelf": "^0.1.1",
+    "husky": "^3.1.0",
     "jest": "^24.9.0",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
