@@ -15,15 +15,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/filipelinhares/generator.git"
+    "url": "git+ssh://git@github.com/filipelinhares/conjurate.git"
   },
   "author": "Filipe Linhares",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/filipelinhares/generator/issues"
+    "url": "https://github.com/filipelinhares/conjurate/issues"
   },
-  "homepage": "https://github.com/filipelinhares/generator#readme",
+  "homepage": "https://github.com/filipelinhares/conjurate#readme",
   "dependencies": {
+    "chalk": "^3.0.0",
     "change-case": "^3.1.0",
     "fs-extra": "^8.1.0",
     "mri": "^1.1.4",
@@ -37,7 +38,6 @@
   "devDependencies": {
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "file-test": "^1.0.0",
     "fileshelf": "^0.1.1",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
