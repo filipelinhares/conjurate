@@ -1,7 +1,3 @@
-## [v0.0.0]
+## [0.4.0]
 
-### Added:
-
-### Removed:
-
-### Changed:
+Start using `vinyl-fs` instead of a temp dir.
