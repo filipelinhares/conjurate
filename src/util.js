@@ -36,6 +36,14 @@ const mapStream = (fn, options = {}) =>
     }
   });
 
+const condPipe = (conditional, fn) => {
+  if (conditional) {
+    return mapStream(fn);
+  }
+
+  return mapStream(item => item);
+};
+
 const readPackagesFile = ({ cwd }) => {
   const userPackageJson = readPkgUp.sync({
     cwd,
@@ -95,5 +103,6 @@ module.exports = {
   ERRORS,
   mapStream,
   readPackagesFile,
-  readConfigFile
+  readConfigFile,
+  condPipe
 };

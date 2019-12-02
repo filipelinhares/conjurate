@@ -1,6 +1,5 @@
 const path = require("path");
 const fs = require("fs-extra");
-const prompts = require("prompts");
 const writePkg = require("write-pkg");
 const signale = require("signale");
 const { CONJURATE_CONFIG_JSON } = require("./content");
@@ -39,20 +38,22 @@ const mergeWithPackageConfig = ({ pkg = {}, cwd }) => {
   });
 };
 
-const setup = async ({ pkg, cwd }) => {
-  const response = await prompts(QUESTIONS);
+const setup = async ({ pkg, cwd, response, flags }) => {
   if (response.confirm && response.place !== "package.json") {
     await fs.writeFile(
       path.resolve(cwd, ".conjurate.json"),
       CONJURATE_CONFIG_JSON
     );
-    signale.success(`Created .conjurate.json`);
+    if (flags.logs) signale.success(`Created .conjurate.json`);
   }
 
   if (response.confirm && response.place === "package.json") {
-    signale.success(`Config added to your package.json`);
     mergeWithPackageConfig({ pkg, cwd });
+    if (flags.logs) signale.success(`Config added to your package.json`);
   }
 };
 
-module.exports = setup;
+module.exports = {
+  setup,
+  QUESTIONS
+};

@@ -3,9 +3,10 @@ const path = require("path");
 const fs = require("fs-extra");
 const mri = require("mri");
 const signale = require("signale");
+const prompts = require("prompts");
 const generator = require("./src/generator");
 const { HELP, printCommands, VERSION } = require("./src/content.js");
-const setup = require("./src/init.js");
+const { setup, QUESTIONS } = require("./src/init.js");
 const {
   readConfigFile,
   readPackagesFile,
@@ -22,7 +23,11 @@ const CLI = mri(argv, {
     h: "help",
     i: "init",
     t: "templates",
-    o: "output"
+    o: "output",
+    l: "logs"
+  },
+  default: {
+    logs: true
   }
 });
 
@@ -40,7 +45,8 @@ async function main(cli) {
   const { userPkg } = readPackagesFile({ cwd: userDir });
 
   if (cli.init) {
-    await setup({ pkg: userPkg, cwd: userDir });
+    const response = await prompts(QUESTIONS);
+    await setup({ pkg: userPkg, cwd: userDir, response, flags: CLI });
     process.exit();
   }
 
@@ -95,8 +101,9 @@ async function main(cli) {
         throw new Error(`${templatesRoot}/${folder} template does not exist`);
       }
 
-      generator({
+      await generator({
         cwd: userDir,
+        flags: CLI,
         templatesFolder,
         templates,
         folder,
