@@ -1,10 +1,10 @@
-const signale = require("signale");
+const signale = require('signale')
 
 const fileCreation = () => item => {
-  signale.success(`Created ${item.relative}`);
-  return item;
-};
+  signale.success(`Created ${item.relative}`)
+  return item
+}
 
 module.exports = {
   fileCreation
-};
+}

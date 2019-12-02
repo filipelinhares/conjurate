@@ -8,10 +8,9 @@
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:unit",
-    "test:lint": "xo",
+    "test:lint": "standard --env jest",
     "test:unit": "jest",
-    "test:coverage": "jest --coverage",
-    "pretty": "pretty-quick"
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -36,30 +35,15 @@
     "write-pkg": "^4.0.0"
   },
   "devDependencies": {
-    "eslint-config-prettier": "^6.7.0",
-    "eslint-plugin-prettier": "^3.1.1",
+    "eslint": "^6.7.2",
     "fileshelf": "^0.1.1",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
-    "prettier": "^1.19.1",
-    "pretty-quick": "^2.0.1",
-    "xo": "^0.25.3"
-  },
-  "xo": {
-    "space": true,
-    "envs": [
-      "jest"
-    ],
-    "extends": [
-      "prettier"
-    ],
-    "plugins": [
-      "prettier"
-    ]
+    "standard": "^14.3.1"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test && pretty-quick --staged"
+      "pre-commit": "npm test && standard --env jest --fix"
     }
   }
 }
