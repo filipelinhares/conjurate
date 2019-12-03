@@ -9,11 +9,6 @@
 [![npm][npm-image]][npm-url] [![license][license-image]][license-url]
 [![changelog][changelog-image]][changelog-url] [![travis][travis-img]][travis-url]
 
----
-layout: docs
-title:  "Docs"
----
-
 ## 1.0 Instalation
 
 ### 1.1 Global
