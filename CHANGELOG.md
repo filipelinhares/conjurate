@@ -1,3 +1,11 @@
+## [0.5.0]
+
+### Changed:
+- `templatesRoot` renamed to `templatesSource`
+
+### Removed:
+- `chalk` as dependencies
+
 ## [0.4.0]
 
 Start using `vinyl-fs` instead of a temp dir.

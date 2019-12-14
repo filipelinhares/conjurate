@@ -47,7 +47,7 @@ Let's start with an component library example
 └── package.json
 ```
 
-#### 2.1 Run conjurate initial command to generate a config file or add the config to package.json
+#### 2.1 Run conjurate initial command to generate a config file.
 
 >  ℹ️ Note: If you are using npm scripts, you need to run **`npm run gen -- --init`** to pass arguments to conjurate.
 
@@ -65,7 +65,7 @@ conjurate --init
 
 ```json
 {
-  "templatesRoot": "./conjurate",
+  "templatesSource": "./conjurate",
   "templates": {
     "<template-name>": "./<default-destination-dir>",
     "<example-component>": "<example-./src/components>"
@@ -77,7 +77,7 @@ conjurate --init
 
 ```diff
 {
-  "templatesRoot": "./conjurate",
+  "templatesSource": "./conjurate",
   "templates": {
 -    "template-name": "./template-destination-dir"
 -    "<example-component>": "<example-./src/components>"
@@ -86,9 +86,9 @@ conjurate --init
 }
 ```
 
-#### 2.3 Create templatesRoot folter in `./conjurate` and the `component` template inside of it using the [5.0 template's](#50-templates) placeholder
+#### 2.3 Create templatesSource folter in `./conjurate` and the `component` template inside of it using the [5.0 template's](#50-templates) placeholder
 
-The name "`component`" must be the same used in the config file in [2.2](#22-change-templates-name-and-default-destination-folder)
+The name of the folder (`component`) must be the same used in the config file in [2.2](#22-change-templates-name-and-default-destination-folder)
 
 ```diff
 +├── conjurate
@@ -139,7 +139,7 @@ conjurate component paper-input
 
 ### 3.1.1 Generate command:
 ```bash
-conjurate <template-name> <placeholder-content> [--out ./output]
+conjurate <template-name> <placeholder-content> [--output ./output]
 ```
 
 #### 3.1.2 Template name
@@ -176,16 +176,16 @@ Overwrite default-destination-dir in config file for used template.
 
 ```json
 {
-  "templatesRoot": "./conjurate",
+  "templatesSource": "./conjurate",
   "templates": {
     "template-name": "./default-destination-dir"
   }
 }
 ```
 
-### 4.1 `templatesRoot`
+### 4.1 `templatesSource`
 
-This is the folder where you keep your templates.
+This is the folder where you keep your templates, the default is `./conjurate`.
 
 ```
 ├── conjurate
@@ -193,9 +193,13 @@ This is the folder where you keep your templates.
 └── package.json
 ```
 #### 4.1.1 Using npm packages
+If you want to keep your templates outside of your project, you can create a package with your templates.
+
+In [5.3 Template package](#53-template-package) you can learn how to.
+
 ```json
 {
-  "templatesRoot": "~package-name",
+  "templatesSource": "npm:package-name",
 }
 ```
 
@@ -215,13 +219,17 @@ The name of the folder is the same used in the CLI when you run the generator.
 ```
 
 ```bash
-$ conjurate template-name placeholder-content [--out ./replace/destination/placeholder-dir]
+$ conjurate template-name placeholder-content [--output ./replace/destination/placeholder-dir]
 ```
 
 ## 5.0 Templates
 
-Each folder inside your `templatesRoot` is a template.
 
+#### 5.1 `templatesSource` structure
+Each folder inside your `templatesSource` is a template.
+
+
+#### 5.2 Placeholders
 You can use a placeholders when developing your templates to help with customization. It will be replaced by the <placeholder-content> passed in the CLI and can be used in files name, files content and folders name. In our example it was `paper-input`._
 
 In the example we used `%camel-case%` and `%kebab-case%` but you have more options:
@@ -249,8 +257,42 @@ In the example we used `%camel-case%` and `%kebab-case%` but you have more optio
 conjurate component "test string"
 ```
 
-## 5.0 Package templates
-TODO
+#### 5.3 Template package
+
+If you want to keep your templates files from your project, you can create a npm package.
+
+You can use the [create-conjurate-template](https://github.com/filipelinhares/create-conjurate-template) repository if you want.
+
+###### 5.3.1 Clone:
+```bash
+git clone git@github.com:filipelinhares/create-conjurate-template.git your-template-name
+cd your-template-name
+npx trash .git
+```
+###### 5.3.2 Configure your ./index.js as you do in templates config inside .conjurate.json
+
+```js
+module.exports = {
+  component: './src/components'
+}
+```
+
+###### 5.3.3 Create your template folders inside ./templates, eg:
+```
+`-- templates
+    `-- example
+        `-- %dash-case%.js
+```
+
+Now inside your project, just configure your new template package:
+
+```json
+{
+  "templatesSource": "npm:package-name",
+}
+```
+
+****
 
 ## License
 
