@@ -49,7 +49,7 @@ Let's start with an component library example
 
 #### 2.1 Run conjurate initial command to generate a config file.
 
->  ℹ️ Note: If you are using npm scripts, you need to run **`npm run gen -- --init`** to pass arguments to conjurate.
+>  ℹ️ Note: If you are using npm scripts, you need to run **`npm run gen -- --init`** to pass flags to conjurate.
 
 ```bash
 conjurate --init

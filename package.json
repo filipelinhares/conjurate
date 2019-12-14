@@ -1,6 +1,6 @@
 {
   "name": "conjurate",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "Easy scaffolding tool",
   "main": "cli.js",
   "bin": {
@@ -23,17 +23,23 @@
   },
   "homepage": "https://github.com/filipelinhares/conjurate#readme",
   "dependencies": {
-    "chalk": "^3.0.0",
+    "ansi-bold": "^0.1.1",
+    "ansi-dim": "^0.1.1",
+    "ansi-gray": "^0.1.1",
+    "ansi-italic": "^0.1.1",
     "change-case": "^3.1.0",
     "fs-extra": "^8.1.0",
     "mri": "^1.1.4",
     "prompts": "^2.3.0",
-    "read-pkg-up": "^7.0.0",
     "resolve-pkg": "^2.0.0",
     "signale": "^1.4.0",
-    "vinyl-fs": "^3.0.3",
-    "write-pkg": "^4.0.0"
+    "vinyl-fs": "^3.0.3"
   },
+  "keywords": [
+    "scaffold",
+    "generator",
+    "conjurate"
+  ],
   "devDependencies": {
     "eslint": "^6.7.2",
     "fileshelf": "^0.1.1",
