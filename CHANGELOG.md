@@ -1,3 +1,7 @@
+## [0.5.1]
+
+Remove `prompts` dependency and make `--init` command works.
+
 ## [0.5.0]
 
 ### Changed:
