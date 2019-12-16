@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run test:lint && npm run test:unit",
-    "test:lint": "standard --env jest",
+    "test:lint": "standard --env jest --fix",
     "test:unit": "jest",
     "test:coverage": "jest --coverage"
   },
@@ -30,7 +30,6 @@
     "change-case": "^3.1.0",
     "fs-extra": "^8.1.0",
     "mri": "^1.1.4",
-    "prompts": "^2.3.0",
     "resolve-pkg": "^2.0.0",
     "signale": "^1.4.0",
     "vinyl-fs": "^3.0.3"

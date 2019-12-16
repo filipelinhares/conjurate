@@ -28,7 +28,8 @@ beforeEach(() => {
 describe.only('init.js', () => {
   test('testing creation of .conjurate.json', async () => {
     const response = {
-      confirm: true
+      confirm: true,
+      answer: './conjurate'
     }
 
     await setup({ response, cwd: root, flags: FLAGS })

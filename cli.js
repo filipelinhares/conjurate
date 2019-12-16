@@ -3,11 +3,10 @@ const path = require('path')
 const fs = require('fs-extra')
 const mri = require('mri')
 const signale = require('signale')
-const prompts = require('prompts')
 const generator = require('./src/generator')
 const { HELP, printCommands, VERSION } = require('./src/content.js')
 const parseConfig = require('./src/parse-config.js')
-const { setup, QUESTIONS } = require('./src/init.js')
+const { setup, prompt } = require('./src/init.js')
 const userDir = process.cwd()
 const argv = process.argv.slice(2)
 
@@ -32,7 +31,10 @@ async function main (cli) {
   }
 
   if (cli.init) {
-    const response = await prompts(QUESTIONS)
+    const response = await prompt({
+      question: 'A folder to keep your templates files?',
+      initial: './conjurate'
+    })
     await setup({ cwd: userDir, response, flags: CLI })
     process.exit()
   }
