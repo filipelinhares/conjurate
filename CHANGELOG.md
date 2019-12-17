@@ -1,3 +1,6 @@
+## [0.5.2]
+Remove `fs-extra` dependency
+
 ## [0.5.1]
 
 Remove `prompts` dependency and make `--init` command works.
