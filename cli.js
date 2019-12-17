@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const path = require('path')
-const fs = require('fs-extra')
+const fs = require('fs').promises
 const mri = require('mri')
 const signale = require('signale')
 const generator = require('./src/generator')
@@ -70,13 +70,16 @@ async function main (cli) {
       : path.resolve(userDir, templates[folder], param)
 
     const templatesFolder = path.resolve(userDir, templatesSource, folder)
-    const templatesFolderExists = await fs.exists(templatesFolder)
 
-    if (!templatesFolderExists) {
-      signale.error(`${templatesSource}/${folder} template does not exist`)
-      signale.log(`
-        The template "${folder}" is configured but you have no corresponding folder inside your ${templatesSource}`)
-      process.exit()
+    try {
+      await fs.open(templatesFolder)
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        signale.error(`${templatesSource}/${folder} template does not exist`)
+        signale.log(`
+          The template "${folder}" is configured but you have no corresponding folder inside your ${templatesSource}`)
+        process.exit()
+      }
     }
 
     await generator({ dest, templatesFolder, param, flags: CLI })

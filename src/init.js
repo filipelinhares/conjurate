@@ -1,5 +1,5 @@
 const path = require('path')
-const fs = require('fs-extra')
+const fs = require('fs').promises
 const readline = require('readline')
 const signale = require('signale')
 const dim = require('ansi-dim')

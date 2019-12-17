@@ -1,17 +1,20 @@
-const fs = require('fs-extra')
+const fs = require('fs').promises
 const path = require('path')
 const resolvePkg = require('resolve-pkg')
 const { isEmpty } = require('./util')
 
 const readConfigFile = async (cwd) => {
   const configPath = path.resolve(cwd, './.conjurate.json')
-  const existsConfigFile = await fs.exists(configPath)
 
-  if (!existsConfigFile) {
-    return {
-      error: `Conjurate config malformed or does not exists.
+  try {
+    await fs.open(configPath)
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      return {
+        error: `Conjurate config malformed or does not exists.
 
-      Try running "conjurate --init"`
+        Try running "conjurate --init"`
+      }
     }
   }
 
@@ -39,10 +42,10 @@ const loadNpmTemplate = async (npmTemplate) => {
   }
 
   const pkgTempaltesPath = path.resolve(npmTemplatePath, 'templates')
-  const exists = await fs.exists(pkgTempaltesPath)
-
-  if (!exists) {
-    return { error: `Missing folder ./templates inside ${npmTemplate} package` }
+  try {
+    await fs.open(pkgTempaltesPath)
+  } catch (error) {
+    if (error.code === 'ENOENT') { return { error: `Missing folder ./templates inside ${npmTemplate} package` } }
   }
 
   return { templatesSource: pkgTempaltesPath, templates: require(npmTemplatePath) }
