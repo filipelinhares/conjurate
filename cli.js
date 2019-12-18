@@ -30,6 +30,11 @@ async function main (cli) {
     process.exit()
   }
 
+  if (cli.help || !cli._.length) {
+    signale.log(HELP)
+    process.exit()
+  }
+
   if (cli.init) {
     const response = await prompt({
       question: 'A folder to keep your templates files?',

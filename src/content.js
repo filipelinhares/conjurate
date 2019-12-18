@@ -24,7 +24,7 @@ const HELP = `
   'Easy scaffolding tool'
 )}
 
-  ${italic(gray('Create config file or add to package.json:'))}
+  ${italic(gray('Create config file:'))}
     conjurate --init
 
   ${italic(gray('Usage:'))}
