@@ -6,7 +6,8 @@ const signale = require('signale')
 const generator = require('./src/generator')
 const { HELP, printCommands, VERSION } = require('./src/content.js')
 const parseConfig = require('./src/parse-config.js')
-const { setup, prompt } = require('./src/init.js')
+const { prompt, confirmation } = require('./src/prompts')
+const { setup } = require('./src/init.js')
 const userDir = process.cwd()
 const argv = process.argv.slice(2)
 
@@ -27,11 +28,6 @@ async function main (cli) {
   if (cli.version) {
     signale.log(`
       conjurate@${VERSION}`)
-    process.exit()
-  }
-
-  if (cli.help || !cli._.length) {
-    signale.log(HELP)
     process.exit()
   }
 
@@ -86,6 +82,18 @@ async function main (cli) {
         process.exit()
       }
     }
+
+    try {
+      const exist = await fs.open(dest)
+      if (exist) {
+        const { confirm } = await confirmation({ question: `Folder "${param}" already exists. Do you want to rewrite it?`, initial: false })
+
+        if (!confirm) {
+          signale.error('Canceled')
+          process.exit()
+        }
+      }
+    } catch (error) {}
 
     await generator({ dest, templatesFolder, param, flags: CLI })
     process.exit()

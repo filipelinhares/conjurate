@@ -53,7 +53,6 @@ const loadNpmTemplate = async (npmTemplate) => {
 
 const parseConfig = async ({ cwd }) => {
   const { templatesSource, templates, error: readFileError } = await readConfigFile(cwd)
-
   if (readFileError) {
     return { error: readFileError }
   }
