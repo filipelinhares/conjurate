@@ -1,9 +1,6 @@
 const path = require('path')
 const fs = require('fs').promises
-const readline = require('readline')
 const signale = require('signale')
-const dim = require('ansi-dim')
-const italic = require('ansi-italic')
 
 const CONJURATE_CONFIG_JSON = (folder = './conjurate') => (`{
   "templatesSource": "${folder}",
@@ -13,20 +10,6 @@ const CONJURATE_CONFIG_JSON = (folder = './conjurate') => (`{
   }
 }
 `)
-
-const prompt = ({ question, initial }) => {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-  })
-
-  return new Promise((resolve, reject) => {
-    rl.question(`${question} ${dim(italic(`default: ${initial}`))} `, (answer) => {
-      rl.close()
-      resolve({ confirm: true, answer })
-    })
-  })
-}
 
 const setup = async ({ cwd, response, flags }) => {
   if (response.confirm) {
@@ -39,6 +22,5 @@ const setup = async ({ cwd, response, flags }) => {
 }
 
 module.exports = {
-  setup,
-  prompt
+  setup
 }
