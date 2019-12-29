@@ -9,7 +9,7 @@ const rl = readline.createInterface({
 
 const prompt = ({ question, initial }) => {
   return new Promise((resolve, reject) => {
-    rl.question(`${question} ${dim(italic(`default: ${initial}`))} `, (answer) => {
+    rl.question(`${question} ${dim(italic(`(default: ${initial})`))} `, (answer) => {
       rl.close()
       resolve({ confirm: true, answer: answer || initial })
     })

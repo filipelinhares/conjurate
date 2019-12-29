@@ -33,7 +33,7 @@ async function main (cli) {
 
   if (cli.init) {
     const response = await prompt({
-      question: 'A folder to keep your templates files?',
+      question: 'Choose a folder to keep your templates',
       initial: './conjurate'
     })
     await setup({ cwd: userDir, response, flags: CLI })
