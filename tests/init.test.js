@@ -7,8 +7,7 @@ const ft = new FileTest(root)
 const CONJURATE_CONFIG_JSON = `{
   "templatesSource": "./conjurate",
   "templates": {
-    "<template-name>": "./<default-destination-dir>",
-    "<example-component>": "<example-./src/components>"
+    "<template-name>": "./<default-output>"
   }
 }
 `
