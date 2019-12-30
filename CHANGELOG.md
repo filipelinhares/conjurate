@@ -1,9 +1,21 @@
+## [0.6.0]
+
+### Added:
+- Confirmation prompts
+- Create `templatesSource` folder on `--init` if does not exists.
+
+### Removed:
+- Option to use config inside `package.json`
+
 ## [0.5.2]
-Remove `fs-extra` dependency
+
+### Removed:
+- `fs-extra` dependency
 
 ## [0.5.1]
 
-Remove `prompts` dependency and make `--init` command works.
+### Removed:
+- `prompts` dependency and make `--init` command works.
 
 ## [0.5.0]
 

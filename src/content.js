@@ -21,7 +21,7 @@ ${Object.keys(templates)
 
 const HELP = `
   ${bold('Conjurate')}@${VERSION} - ${italic(
-  'Easy scaffolding tool'
+  'Easy generator tool'
 )}
 
   ${italic(gray('Create config file:'))}

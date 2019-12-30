@@ -1,27 +1,14 @@
 {
   "name": "conjurate",
+  "description": "Easy generator tool",
   "version": "0.5.2",
-  "description": "Easy scaffolding tool",
-  "main": "cli.js",
+  "author": "Filipe Linhares",
   "bin": {
     "conjurate": "./cli.js"
   },
-  "scripts": {
-    "test": "npm run test:lint && npm run test:unit",
-    "test:lint": "standard --env jest --fix",
-    "test:unit": "jest",
-    "test:coverage": "jest --coverage"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@github.com/filipelinhares/conjurate.git"
-  },
-  "author": "Filipe Linhares",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/filipelinhares/conjurate/issues"
   },
-  "homepage": "https://github.com/filipelinhares/conjurate#readme",
   "dependencies": {
     "ansi-bold": "^0.1.1",
     "ansi-dim": "^0.1.1",
@@ -33,21 +20,34 @@
     "signale": "^1.4.0",
     "vinyl-fs": "^3.0.3"
   },
-  "keywords": [
-    "scaffold",
-    "generator",
-    "conjurate"
-  ],
   "devDependencies": {
-    "eslint": "^6.7.2",
+    "eslint": "^6.8.0",
     "fileshelf": "^0.1.1",
     "husky": "^3.1.0",
     "jest": "^24.9.0",
     "standard": "^14.3.1"
   },
+  "homepage": "https://github.com/filipelinhares/conjurate#readme",
   "husky": {
     "hooks": {
       "pre-commit": "npm test && standard --env jest --fix"
     }
+  },
+  "keywords": [
+    "conjurate",
+    "generator",
+    "scaffold"
+  ],
+  "license": "MIT",
+  "main": "cli.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/filipelinhares/conjurate.git"
+  },
+  "scripts": {
+    "test": "npm run test:lint && npm run test:unit",
+    "test:coverage": "jest --coverage",
+    "test:lint": "standard --env jest --fix",
+    "test:unit": "jest"
   }
 }
