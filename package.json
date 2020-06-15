@@ -1,7 +1,7 @@
 {
   "name": "conjurate",
   "description": "Easy generator tool",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "author": "Filipe Linhares",
   "bin": {
     "conjurate": "./cli.js"
