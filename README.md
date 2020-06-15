@@ -28,6 +28,7 @@ $ npx conjurate
   Options:
     -t, --templates   print templates listed in your conjurate config
     -o, --output      overwrite the default destination dir for choose template
+    -f, --flat        skip create template folder inside destination dir
     -h, --help        show this message
     -v, --version     show version number
     -no-l, --no-logs  do not print template generation info

@@ -17,6 +17,7 @@ const CLI = mri(argv, {
     i: 'init',
     t: 'templates',
     o: 'output',
+    f: 'flat',
     l: 'logs'
   },
   default: {
@@ -68,7 +69,9 @@ async function main (cli) {
 
     const dest = cli.output
       ? path.resolve(userDir, cli.output, param)
-      : path.resolve(userDir, templates[folder], param)
+      : cli.flat
+        ? path.resolve(userDir, templates[folder])
+        : path.resolve(userDir, templates[folder], param)
 
     const templatesFolder = path.resolve(userDir, templatesSource, folder)
 
