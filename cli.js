@@ -88,7 +88,7 @@ async function main (cli) {
 
     try {
       const exist = await fs.open(dest)
-      if (exist) {
+      if (!cli.flat && exist) {
         const { confirm } = await confirmation({ question: `Folder "${param}" already exists. Do you want to rewrite it?`, initial: false })
 
         if (!confirm) {
