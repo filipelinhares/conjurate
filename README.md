@@ -11,9 +11,7 @@
 [![npm][npm-image]][npm-url] [![license][license-image]][license-url]
 [![changelog][changelog-image]][changelog-url] [![travis][travis-img]][travis-url]
 
-- - -
 [Get started](http://conjurate.surge.sh/getting-started) · [Docs](http://conjurate.surge.sh/docs) · [Conjurate templates](http://conjurate.surge.sh/templates)
-- - -
 
 ```bash
 $ npx conjurate
