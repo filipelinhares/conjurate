@@ -17,7 +17,7 @@ const CLI = mri(argv, {
     i: 'init',
     t: 'templates',
     o: 'output',
-    f: 'flat',
+    fl: 'flat',
     l: 'logs'
   },
   default: {
