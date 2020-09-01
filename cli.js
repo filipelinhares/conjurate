@@ -18,7 +18,8 @@ const CLI = mri(argv, {
     t: 'templates',
     o: 'output',
     fl: 'flat',
-    l: 'logs'
+    l: 'logs',
+    h: 'help'
   },
   default: {
     logs: true
@@ -29,6 +30,11 @@ async function main (cli) {
   if (cli.version) {
     signale.log(`
       conjurate@${VERSION}`)
+    process.exit()
+  }
+
+  if (cli.help) {
+    signale.log(HELP)
     process.exit()
   }
 
