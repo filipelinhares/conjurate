@@ -33,7 +33,7 @@ $ npx conjurate
     https://github.com/filipelinhares/conjurate
     https://conjurate.surge.sh
 
- % Conjurate@0.7.1
+ % Conjurate
 ```
 
 ## License

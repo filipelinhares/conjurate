@@ -1,3 +1,11 @@
+# CHANGELOG 🗃
+
+## [0.8.0]
+
+### Changed:
+- `--flat` flag alias from `-f` to `-fl`.
+
+
 ## [0.7.0]
 
 ### Added:

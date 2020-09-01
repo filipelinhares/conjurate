@@ -1,7 +1,7 @@
 {
   "name": "conjurate",
   "description": "Pluggable generator tool",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "author": "Filipe Linhares",
   "bin": {
     "conjurate": "./cli.js"
@@ -15,16 +15,16 @@
     "ansi-gray": "^0.1.1",
     "ansi-italic": "^0.1.1",
     "change-case": "^3.1.0",
-    "mri": "^1.1.5",
+    "mri": "^1.1.6",
     "resolve-pkg": "^2.0.0",
     "signale": "^1.4.0",
     "vinyl-fs": "^3.0.3"
   },
   "devDependencies": {
-    "eslint": "^7.2.0",
+    "eslint": "^7.8.0",
     "fileshelf": "^0.1.1",
     "husky": "^4.2.5",
-    "jest": "^26.0.1",
+    "jest": "^26.4.2",
     "standard": "^14.3.4"
   },
   "homepage": "https://github.com/filipelinhares/conjurate#readme",
