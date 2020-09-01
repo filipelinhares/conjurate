@@ -20,27 +20,24 @@ ${Object.keys(templates)
 `
 
 const HELP = `
-  ${bold('Conjurate')}@${VERSION} - ${italic(
-  'Easy generator tool'
-)}
-
-  ${italic(gray('Create config file:'))}
+  ${bold(gray('Set up:'))}
     conjurate --init
 
-  ${italic(gray('Usage:'))}
+  ${bold(gray('Usage:'))}
     conjurate <template-name> <placeholder-name>
 
-  ${italic(gray('Options:'))}
-    -t, --templates   print templates listed in your conjurate config
-    -o, --output      overwrite the default destination dir for choose template
-    -f, --flat        skip create template folder inside destination dir
-    -h, --help        show this message
-    -v, --version     show version number
-    -no-l, --no-logs  do not print template generation info
+  ${bold(gray('Options:'))}
+    -o,  --output      overwrite the default output folder
+    -fl, --flat        generate structure without a container folder
+    -t,  --templates   show list of available templates
+    -v,  --version     show version number
+    -h,  --help        show this message
 
-  ${italic(gray('Docs:'))}
+  ${bold(gray('Docs:'))}
     https://github.com/filipelinhares/conjurate
     https://conjurate.surge.sh
+
+ ${italic(bold('% Conjurate'))}@${VERSION}
 `
 
 module.exports = {

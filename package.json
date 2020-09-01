@@ -1,6 +1,6 @@
 {
   "name": "conjurate",
-  "description": "Easy generator tool",
+  "description": "Pluggable generator tool",
   "version": "0.7.1",
   "author": "Filipe Linhares",
   "bin": {

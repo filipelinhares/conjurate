@@ -4,7 +4,9 @@
 
 # Conjurate
 
-> Easy way to generate your files
+> Pluggable generator tool
+> 
+> An easy way to create new files and folder structures based on templates.
 
 [![npm][npm-image]][npm-url] [![license][license-image]][license-url]
 [![changelog][changelog-image]][changelog-url] [![travis][travis-img]][travis-url]
@@ -13,32 +15,28 @@
 [Get started](http://conjurate.surge.sh/getting-started) · [Docs](http://conjurate.surge.sh/docs) · [Conjurate templates](http://conjurate.surge.sh/templates)
 - - -
 
-
 ```bash
 $ npx conjurate
 
- Conjurate - Easy generator tool
-
-  Create config file:
+  Set up:
     conjurate --init
 
   Usage:
     conjurate <template-name> <placeholder-name>
 
   Options:
-    -t, --templates   print templates listed in your conjurate config
-    -o, --output      overwrite the default destination dir for choose template
-    -f, --flat        skip create template folder inside destination dir
-    -h, --help        show this message
-    -v, --version     show version number
-    -no-l, --no-logs  do not print template generation info
+    -o,  --output      overwrite the default output folder
+    -fl, --flat        generate structure without a container folder
+    -t,  --templates   show list of available templates
+    -v,  --version     show version number
+    -h,  --help        show this message
 
   Docs:
     https://github.com/filipelinhares/conjurate
     https://conjurate.surge.sh
+
+ % Conjurate@0.7.1
 ```
-
-
 
 ## License
 
